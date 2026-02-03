@@ -1,6 +1,6 @@
 # MathNotes
 location for all my math notes from linear algebra to differential equations
-to be implemented after/during fall 2026
+to be implemented after/during spring 2026
 
 plan:
 - add MathNotes, PhysicsNotes, CompSciNotes
