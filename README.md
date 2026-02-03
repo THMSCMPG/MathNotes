@@ -7,7 +7,7 @@ plan:
 - adjust navbar dropdown to reveal links:
   - CircuitNotes
   - MathNotes
-  - PhysicsNotes
+  - PhysNotes
   - CompSciNotes
   - Independent Research 
 -  and when you hover over one of them:
@@ -38,7 +38,7 @@ Pages that I will have:
   - CalculusII
   - CalculusIII
   - DiffEqu
-- PhysicsNotes >
+- PhysNotes >
   - Introduction (uni 1 and uni 2 basics)
   - ModernPhys
   - ClassicalMech
