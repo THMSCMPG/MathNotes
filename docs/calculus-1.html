@@ -1,0 +1,338 @@
+---
+layout: MathNotes
+title: Calculus I
+subtitle: Limits, Derivatives, and Single-Variable Analysis
+---
+
+<div class="section">
+<h2>🎯 Limits and Continuity</h2>
+
+<div class="theory-box">
+<h4>Formal Definition of a Limit</h4>
+<p>We say lim_{x→a} f(x) = L if for every ε > 0, there exists δ > 0 such that:</p>
+<div class="formula">0 < |x - a| < δ  ⟹  |f(x) - L| < ε</div>
+<p><strong>Intuition:</strong> f(x) can be made arbitrarily close to L by taking x sufficiently close to a (but not equal to a).</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Limit Laws</h4>
+<p>If lim_{x→a} f(x) = L and lim_{x→a} g(x) = M:</p>
+<ul>
+<li>Sum: lim [f(x) + g(x)] = L + M</li>
+<li>Product: lim [f(x)·g(x)] = L·M</li>
+<li>Quotient: lim [f(x)/g(x)] = L/M (if M ≠ 0)</li>
+<li>Power: lim [f(x)]^n = L^n</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Special Limits</h4>
+<div class="formula">
+lim_{x→0} sin(x)/x = 1<br>
+lim_{x→0} (1-cos(x))/x = 0<br>
+lim_{x→∞} (1 + 1/x)^x = e<br>
+lim_{x→0} (e^x - 1)/x = 1
+</div>
+<p>These fundamental limits are essential for derivative computations.</p>
+</div>
+
+<div class="component-card">
+<h4>Continuity</h4>
+<p>f is continuous at x = a if:</p>
+<ol>
+<li>f(a) is defined</li>
+<li>lim_{x→a} f(x) exists</li>
+<li>lim_{x→a} f(x) = f(a)</li>
+</ol>
+<p><strong>Types:</strong> Removable, jump, infinite discontinuities</p>
+</div>
+
+<div class="component-card">
+<h4>Intermediate Value Theorem</h4>
+<p>If f is continuous on [a,b] and k is between f(a) and f(b), then there exists c ∈ (a,b) where f(c) = k.</p>
+<p><strong>Application:</strong> Proving existence of roots</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📐 The Derivative</h2>
+
+<div class="theory-box">
+<h4>Definition via Limit</h4>
+<div class="formula">
+f'(x) = lim_{h→0} [f(x+h) - f(x)]/h
+</div>
+<p><strong>Geometric Interpretation:</strong> Instantaneous rate of change; slope of tangent line at x.</p>
+<p><strong>Alternative form:</strong> f'(a) = lim_{x→a} [f(x) - f(a)]/(x - a)</p>
+</div>
+
+<table>
+<tr>
+<th>Function</th>
+<th>Derivative</th>
+<th>Note</th>
+</tr>
+<tr>
+<td>x^n</td>
+<td>nx^(n-1)</td>
+<td>Power rule</td>
+</tr>
+<tr>
+<td>sin(x)</td>
+<td>cos(x)</td>
+<td>From limit of sin(h)/h</td>
+</tr>
+<tr>
+<td>cos(x)</td>
+<td>-sin(x)</td>
+<td>From limit of (1-cos(h))/h</td>
+</tr>
+<tr>
+<td>e^x</td>
+<td>e^x</td>
+<td>Unique function equal to its derivative</td>
+</tr>
+<tr>
+<td>ln(x)</td>
+<td>1/x</td>
+<td>Inverse of e^x</td>
+</tr>
+<tr>
+<td>tan(x)</td>
+<td>sec²(x)</td>
+<td>Quotient rule on sin/cos</td>
+</tr>
+<tr>
+<td>arctan(x)</td>
+<td>1/(1+x²)</td>
+<td>From implicit differentiation</td>
+</tr>
+</table>
+</div>
+
+<div class="section">
+<h2>⚡ Differentiation Rules</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Chain Rule</h4>
+<div class="formula">d/dx[f(g(x))] = f'(g(x))·g'(x)</div>
+<p><strong>Example:</strong> d/dx[sin(x²)] = cos(x²)·2x</p>
+<p><strong>Leibniz notation:</strong> dy/dx = (dy/du)(du/dx)</p>
+</div>
+
+<div class="component-card">
+<h4>Product Rule</h4>
+<div class="formula">d/dx[f(x)g(x)] = f'(x)g(x) + f(x)g'(x)</div>
+<p><strong>Mnemonic:</strong> "First times derivative of second plus second times derivative of first"</p>
+</div>
+
+<div class="component-card">
+<h4>Quotient Rule</h4>
+<div class="formula">d/dx[f(x)/g(x)] = [f'(x)g(x) - f(x)g'(x)]/[g(x)]²</div>
+<p><strong>Mnemonic:</strong> "Low-d-high minus high-d-low, over low squared"</p>
+</div>
+
+<div class="component-card">
+<h4>Implicit Differentiation</h4>
+<p>For relation F(x,y) = 0, differentiate both sides with respect to x, treating y as function of x.</p>
+<p><strong>Example:</strong> x² + y² = 25<br>
+2x + 2y(dy/dx) = 0<br>
+dy/dx = -x/y</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📊 Applications of Derivatives</h2>
+
+<div class="theory-box">
+<h4>Mean Value Theorem</h4>
+<p>If f is continuous on [a,b] and differentiable on (a,b), then there exists c ∈ (a,b) where:</p>
+<div class="formula">f'(c) = [f(b) - f(a)]/(b - a)</div>
+<p><strong>Interpretation:</strong> At some point, the instantaneous rate equals the average rate over the interval.</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Critical Points</h4>
+<p>x = c is a critical point if f'(c) = 0 or f'(c) does not exist.</p>
+<p><strong>First Derivative Test:</strong></p>
+<ul>
+<li>f' changes from + to - at c: local max</li>
+<li>f' changes from - to + at c: local min</li>
+<li>f' doesn't change sign: inflection point</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Second Derivative Test</h4>
+<p>If f'(c) = 0:</p>
+<ul>
+<li>f''(c) > 0: local minimum</li>
+<li>f''(c) < 0: local maximum</li>
+<li>f''(c) = 0: test inconclusive</li>
+</ul>
+<p><strong>Concavity:</strong> f'' > 0 means concave up, f'' < 0 means concave down</p>
+</div>
+
+<div class="component-card">
+<h4>L'Hôpital's Rule</h4>
+<p>For indeterminate forms 0/0 or ∞/∞:</p>
+<div class="formula">lim_{x→a} f(x)/g(x) = lim_{x→a} f'(x)/g'(x)</div>
+<p>Can be applied repeatedly if needed.</p>
+<p><strong>Example:</strong> lim_{x→0} sin(x)/x = lim_{x→0} cos(x)/1 = 1</p>
+</div>
+
+<div class="component-card">
+<h4>Optimization</h4>
+<p><strong>Strategy:</strong></p>
+<ol>
+<li>Identify quantity to optimize (write as function)</li>
+<li>Find domain constraints</li>
+<li>Locate critical points: f'(x) = 0</li>
+<li>Evaluate at critical points and endpoints</li>
+<li>Verify with second derivative or first derivative test</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📈 Related Rates</h2>
+
+<div class="theory-box">
+<h4>Method</h4>
+<p><strong>Strategy for related rates problems:</strong></p>
+<ol>
+<li>Draw diagram and assign variables</li>
+<li>Write equation relating the variables</li>
+<li>Differentiate implicitly with respect to time t</li>
+<li>Substitute known values and solve for unknown rate</li>
+</ol>
+</div>
+
+<div class="component-card">
+<h4>Example: Ladder Problem</h4>
+<p>A 10 ft ladder slides down a wall at 2 ft/s. How fast is the base moving when the top is 6 ft high?</p>
+<p><strong>Solution:</strong><br>
+x² + y² = 100 (Pythagorean theorem)<br>
+2x(dx/dt) + 2y(dy/dt) = 0<br>
+When y = 6: x = 8, dy/dt = -2<br>
+2(8)(dx/dt) + 2(6)(-2) = 0<br>
+dx/dt = 24/16 = 1.5 ft/s</p>
+</div>
+</div>
+
+<div class="section">
+<h2>🔄 Approximations</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Linear Approximation</h4>
+<p>Near x = a:</p>
+<div class="formula">f(x) ≈ f(a) + f'(a)(x - a)</div>
+<p>This is the equation of the tangent line at x = a.</p>
+<p><strong>Example:</strong> √(4.1) ≈ 2 + (1/4)(0.1) = 2.025</p>
+</div>
+
+<div class="component-card">
+<h4>Newton's Method</h4>
+<p>Iterative root-finding algorithm:</p>
+<div class="formula">x_{n+1} = x_n - f(x_n)/f'(x_n)</div>
+<p>Converges quadratically to root when initial guess is close.</p>
+<p><strong>Geometric interpretation:</strong> Follow tangent line to x-axis</p>
+</div>
+
+<div class="component-card">
+<h4>Differentials</h4>
+<div class="formula">dy = f'(x)dx</div>
+<p>dy represents the change in the linearization; Δy represents actual change.</p>
+<p><strong>Error estimation:</strong> Δy ≈ dy when dx is small</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>💡 Physical Applications</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Velocity and Acceleration</h4>
+<p>For position function s(t):</p>
+<div class="formula">
+v(t) = s'(t) = ds/dt<br>
+a(t) = v'(t) = s''(t) = d²s/dt²
+</div>
+<p><strong>Speed:</strong> |v(t)|<br>
+<strong>Total distance:</strong> ∫|v(t)|dt</p>
+</div>
+
+<div class="component-card">
+<h4>Exponential Growth/Decay</h4>
+<p>If dy/dt = ky, then:</p>
+<div class="formula">y(t) = y₀e^(kt)</div>
+<p><strong>Applications:</strong></p>
+<ul>
+<li>k > 0: Population growth, compound interest</li>
+<li>k < 0: Radioactive decay, cooling</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Marginal Analysis (Economics)</h4>
+<p><strong>Marginal cost:</strong> C'(x) ≈ cost of producing one more unit</p>
+<p><strong>Marginal revenue:</strong> R'(x)</p>
+<p><strong>Profit maximization:</strong> R'(x) = C'(x)</p>
+</div>
+
+<div class="component-card">
+<h4>Elasticity</h4>
+<p>Price elasticity of demand:</p>
+<div class="formula">E = -(p/q)(dq/dp)</div>
+<p>|E| > 1: elastic (demand sensitive to price)<br>
+|E| < 1: inelastic<br>
+|E| = 1: unit elastic</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔬 Advanced Topics</h2>
+
+<div class="theory-box">
+<h4>Rolle's Theorem</h4>
+<p>If f is continuous on [a,b], differentiable on (a,b), and f(a) = f(b), then there exists c ∈ (a,b) where f'(c) = 0.</p>
+<p><strong>Significance:</strong> Foundation for proving the Mean Value Theorem</p>
+</div>
+
+<div class="theory-box">
+<h4>Extreme Value Theorem</h4>
+<p>If f is continuous on closed interval [a,b], then f attains both absolute maximum and absolute minimum values on [a,b].</p>
+<p><strong>Finding absolute extrema:</strong></p>
+<ol>
+<li>Find critical points in (a,b)</li>
+<li>Evaluate f at critical points and endpoints</li>
+<li>Largest value is absolute max, smallest is absolute min</li>
+</ol>
+</div>
+</div>
+
+<div class="section">
+<h2>💡 Problem-Solving Strategies</h2>
+
+<div class="component-card">
+<h4>Curve Sketching Checklist</h4>
+<ol>
+<li>Domain and intercepts</li>
+<li>Symmetry (even/odd functions)</li>
+<li>Asymptotes (vertical, horizontal, oblique)</li>
+<li>First derivative: increasing/decreasing, local extrema</li>
+<li>Second derivative: concavity, inflection points</li>
+<li>Behavior at endpoints and infinity</li>
+<li>Plot key points and sketch</li>
+</ol>
+</div>
+</div>

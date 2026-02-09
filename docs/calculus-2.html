@@ -1,0 +1,318 @@
+---
+layout: MathNotes
+title: Calculus II
+subtitle: Integration Techniques, Sequences, Series, and Parametric Equations
+---
+
+<div class="section">
+<h2>∫ Fundamental Theorem of Calculus</h2>
+
+<div class="theory-box">
+<h4>Part 1: Accumulation Function</h4>
+<p>If f is continuous on [a,b] and F(x) = ∫ᵃˣ f(t)dt, then:</p>
+<div class="formula">F'(x) = f(x)</div>
+<p><strong>Interpretation:</strong> Differentiation and integration are inverse operations.</p>
+</div>
+
+<div class="theory-box">
+<h4>Part 2: Evaluation Theorem</h4>
+<p>If f is continuous on [a,b] and F is an antiderivative of f, then:</p>
+<div class="formula">∫ᵃᵇ f(x)dx = F(b) - F(a)</div>
+<p><strong>Notation:</strong> F(x)|ᵃᵇ = F(b) - F(a)</p>
+</div>
+</div>
+
+<div class="section">
+<h2>🔧 Integration Techniques</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>u-Substitution</h4>
+<p><strong>Method:</strong> Let u = g(x), du = g'(x)dx</p>
+<div class="formula">∫ f(g(x))g'(x)dx = ∫ f(u)du</div>
+<p><strong>Example:</strong> ∫ 2x·e^(x²)dx<br>
+Let u = x², du = 2xdx<br>
+= ∫ e^u du = e^u + C = e^(x²) + C</p>
+</div>
+
+<div class="component-card">
+<h4>Integration by Parts</h4>
+<div class="formula">∫ u dv = uv - ∫ v du</div>
+<p><strong>LIATE priority for choosing u:</strong><br>
+L - Logarithmic<br>
+I - Inverse trig<br>
+A - Algebraic<br>
+T - Trigonometric<br>
+E - Exponential</p>
+<p><strong>Example:</strong> ∫ x·e^x dx<br>
+u = x, dv = e^x dx<br>
+= xe^x - ∫ e^x dx = xe^x - e^x + C</p>
+</div>
+
+<div class="component-card">
+<h4>Trigonometric Integrals</h4>
+<p><strong>Powers of sin and cos:</strong></p>
+<ul>
+<li>Odd power: use sin²x + cos²x = 1, substitute</li>
+<li>Even powers: use half-angle formulas</li>
+</ul>
+<p><strong>Example:</strong> ∫ sin³x dx = ∫ sin x(1-cos²x)dx<br>
+Let u = cos x: -∫(1-u²)du = -u + u³/3 + C</p>
+</div>
+
+<div class="component-card">
+<h4>Trigonometric Substitution</h4>
+<table style="font-size: 0.9em;">
+<tr><th>Form</th><th>Substitution</th><th>Identity</th></tr>
+<tr><td>√(a²-x²)</td><td>x = a sin θ</td><td>1-sin²θ = cos²θ</td></tr>
+<tr><td>√(a²+x²)</td><td>x = a tan θ</td><td>1+tan²θ = sec²θ</td></tr>
+<tr><td>√(x²-a²)</td><td>x = a sec θ</td><td>sec²θ-1 = tan²θ</td></tr>
+</table>
+</div>
+
+<div class="component-card">
+<h4>Partial Fractions</h4>
+<p>Decompose rational function P(x)/Q(x) where deg(P) < deg(Q):</p>
+<p><strong>Linear factors:</strong> (x-a) → A/(x-a)</p>
+<p><strong>Repeated linear:</strong> (x-a)² → A/(x-a) + B/(x-a)²</p>
+<p><strong>Irreducible quadratic:</strong> x²+bx+c → (Ax+B)/(x²+bx+c)</p>
+</div>
+
+<div class="component-card">
+<h4>Improper Integrals</h4>
+<p><strong>Type 1 (infinite interval):</strong></p>
+<div class="formula">∫ᵃ^∞ f(x)dx = lim_{t→∞} ∫ᵃᵗ f(x)dx</div>
+<p><strong>Type 2 (discontinuous integrand):</strong></p>
+<div class="formula">∫ᵃᵇ f(x)dx = lim_{t→b⁻} ∫ᵃᵗ f(x)dx</div>
+<p>if f has discontinuity at x = b</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📏 Applications of Integration</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Area Between Curves</h4>
+<div class="formula">A = ∫ᵃᵇ |f(x) - g(x)|dx</div>
+<p>For curves as functions of y:</p>
+<div class="formula">A = ∫ᶜᵈ |f(y) - g(y)|dy</div>
+</div>
+
+<div class="component-card">
+<h4>Volume: Disk Method</h4>
+<p>Rotation about x-axis:</p>
+<div class="formula">V = π∫ᵃᵇ [f(x)]²dx</div>
+<p>Rotation about y-axis:</p>
+<div class="formula">V = π∫ᶜᵈ [f(y)]²dy</div>
+</div>
+
+<div class="component-card">
+<h4>Volume: Washer Method</h4>
+<p>When region between two curves rotates:</p>
+<div class="formula">V = π∫ᵃᵇ ([R(x)]² - [r(x)]²)dx</div>
+<p>R(x) = outer radius, r(x) = inner radius</p>
+</div>
+
+<div class="component-card">
+<h4>Volume: Shell Method</h4>
+<p>For rotation about y-axis:</p>
+<div class="formula">V = 2π∫ᵃᵇ x·f(x)dx</div>
+<p><strong>Advantage:</strong> Often simpler when disk method requires solving for x in terms of y</p>
+</div>
+
+<div class="component-card">
+<h4>Arc Length</h4>
+<p>Length of curve y = f(x) from x = a to x = b:</p>
+<div class="formula">L = ∫ᵃᵇ √(1 + [f'(x)]²)dx</div>
+<p>For parametric curve (x(t), y(t)):</p>
+<div class="formula">L = ∫ᵗ¹ᵗ² √([x'(t)]² + [y'(t)]²)dt</div>
+</div>
+
+<div class="component-card">
+<h4>Surface Area of Revolution</h4>
+<p>Rotation about x-axis:</p>
+<div class="formula">S = 2π∫ᵃᵇ f(x)√(1 + [f'(x)]²)dx</div>
+<p><strong>Memory aid:</strong> Arc length formula multiplied by circumference 2πr</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📊 Sequences and Series</h2>
+
+<div class="theory-box">
+<h4>Sequence Convergence</h4>
+<p>Sequence {aₙ} converges to L if for every ε > 0, there exists N such that:</p>
+<div class="formula">n > N  ⟹  |aₙ - L| < ε</div>
+<p><strong>Notation:</strong> lim_{n→∞} aₙ = L</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Geometric Series</h4>
+<div class="formula">Σ_{n=0}^∞ ar^n = a/(1-r), |r| < 1</div>
+<p>Diverges if |r| ≥ 1</p>
+<p><strong>Example:</strong> 1 + 1/2 + 1/4 + ... = 1/(1-1/2) = 2</p>
+</div>
+
+<div class="component-card">
+<h4>Harmonic Series</h4>
+<div class="formula">Σ_{n=1}^∞ 1/n</div>
+<p>Diverges despite lim 1/n = 0</p>
+<p><strong>p-series:</strong> Σ 1/n^p converges iff p > 1</p>
+</div>
+
+<div class="component-card">
+<h4>Convergence Tests</h4>
+<p><strong>Divergence Test:</strong> If lim aₙ ≠ 0, series diverges</p>
+<p><strong>Integral Test:</strong> If f is positive, decreasing, and continuous, then Σf(n) and ∫f(x)dx converge or diverge together</p>
+</div>
+
+<div class="component-card">
+<h4>Comparison Tests</h4>
+<p><strong>Direct:</strong> If 0 ≤ aₙ ≤ bₙ:</p>
+<ul>
+<li>Σbₙ converges ⟹ Σaₙ converges</li>
+<li>Σaₙ diverges ⟹ Σbₙ diverges</li>
+</ul>
+<p><strong>Limit Comparison:</strong> If lim(aₙ/bₙ) = c > 0, both series behave the same</p>
+</div>
+
+<div class="component-card">
+<h4>Ratio Test</h4>
+<div class="formula">L = lim_{n→∞} |aₙ₊₁/aₙ|</div>
+<ul>
+<li>L < 1: converges absolutely</li>
+<li>L > 1: diverges</li>
+<li>L = 1: test inconclusive</li>
+</ul>
+<p>Excellent for series with factorials or exponentials</p>
+</div>
+
+<div class="component-card">
+<h4>Alternating Series Test</h4>
+<p>For Σ(-1)^n bₙ where bₙ > 0:</p>
+<p>Converges if:</p>
+<ol>
+<li>bₙ₊₁ ≤ bₙ (decreasing)</li>
+<li>lim bₙ = 0</li>
+</ol>
+<p><strong>Error bound:</strong> |Error| ≤ bₙ₊₁</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎯 Power Series</h2>
+
+<div class="theory-box">
+<h4>Definition and Convergence</h4>
+<p>A power series centered at a is:</p>
+<div class="formula">Σ_{n=0}^∞ cₙ(x-a)^n</div>
+<p>Has radius of convergence R where series:</p>
+<ul>
+<li>Converges absolutely for |x-a| < R</li>
+<li>Diverges for |x-a| > R</li>
+<li>May converge or diverge at endpoints x = a±R</li>
+</ul>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Taylor Series</h4>
+<div class="formula">f(x) = Σ_{n=0}^∞ [f^(n)(a)/(n!)](x-a)^n</div>
+<p><strong>Maclaurin series:</strong> Taylor series at a = 0</p>
+</div>
+
+<div class="component-card">
+<h4>Common Maclaurin Series</h4>
+<div class="formula" style="font-size: 0.85em;">
+e^x = Σ x^n/n! = 1 + x + x²/2! + x³/3! + ...<br>
+sin(x) = Σ (-1)^n x^(2n+1)/(2n+1)!<br>
+cos(x) = Σ (-1)^n x^(2n)/(2n)!<br>
+1/(1-x) = Σ x^n, |x| < 1
+</div>
+</div>
+
+<div class="component-card">
+<h4>Operations on Power Series</h4>
+<p>Within radius of convergence:</p>
+<ul>
+<li>Can differentiate term-by-term</li>
+<li>Can integrate term-by-term</li>
+<li>Can add/subtract series</li>
+<li>Can multiply series (Cauchy product)</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Taylor's Remainder</h4>
+<div class="formula">Rₙ(x) = f^(n+1)(c)/(n+1)! · (x-a)^(n+1)</div>
+<p>for some c between x and a</p>
+<p><strong>Use:</strong> Bound approximation error</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔄 Parametric Equations</h2>
+
+<div class="theory-box">
+<h4>Parametric Curves</h4>
+<p>Curve described by x = f(t), y = g(t)</p>
+<p><strong>Slope:</strong> dy/dx = (dy/dt)/(dx/dt)</p>
+<p><strong>Arc length:</strong> L = ∫√((dx/dt)² + (dy/dt)²)dt</p>
+</div>
+
+<div class="component-card">
+<h4>Example: Circle</h4>
+<p>x = r cos(t), y = r sin(t), 0 ≤ t ≤ 2π</p>
+<p>Eliminating parameter: x² + y² = r²</p>
+</div>
+
+<div class="component-card">
+<h4>Example: Cycloid</h4>
+<p>Path traced by point on circle of radius r rolling along a line:</p>
+<div class="formula">
+x = r(t - sin t)<br>
+y = r(1 - cos t)
+</div>
+<p><strong>Property:</strong> Tautochrone curve (brachistochrone problem)</p>
+</div>
+</div>
+
+<div class="section">
+<h2>⚡ Polar Coordinates</h2>
+
+<div class="theory-box">
+<h4>Conversion Formulas</h4>
+<div class="formula">
+x = r cos θ, y = r sin θ<br>
+r² = x² + y², tan θ = y/x
+</div>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Area in Polar Coordinates</h4>
+<div class="formula">A = (1/2)∫ᵅᵝ r²dθ</div>
+<p><strong>Example:</strong> Circle r = a<br>
+A = (1/2)∫₀^(2π) a²dθ = πa²</p>
+</div>
+
+<div class="component-card">
+<h4>Arc Length</h4>
+<div class="formula">L = ∫ᵅᵝ √(r² + (dr/dθ)²)dθ</div>
+</div>
+
+<div class="component-card">
+<h4>Common Polar Curves</h4>
+<p><strong>Cardioid:</strong> r = a(1 + cos θ)<br>
+<strong>Rose curve:</strong> r = a cos(nθ)<br>
+<strong>Lemniscate:</strong> r² = a² cos(2θ)<br>
+<strong>Spiral of Archimedes:</strong> r = aθ</p>
+</div>
+</div>
+</div>

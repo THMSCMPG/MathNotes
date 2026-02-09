@@ -1,0 +1,333 @@
+---
+layout: MathNotes
+title: Numerical Analysis
+subtitle: Computational Methods for Mathematical Problems
+---
+
+<div class="section">
+<h2>🔢 Error Analysis</h2>
+
+<div class="theory-box">
+<h4>Types of Error</h4>
+<p><strong>Round-off error:</strong> From finite precision arithmetic (floating-point representation)</p>
+<p><strong>Truncation error:</strong> From approximating infinite process with finite steps</p>
+<p><strong>Absolute error:</strong> |x - x̂|</p>
+<p><strong>Relative error:</strong> |x - x̂|/|x|</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Floating-Point Representation</h4>
+<p>Number stored as: x = ±m × β^e</p>
+<p><strong>IEEE 754 Double Precision:</strong></p>
+<ul>
+<li>1 sign bit, 11 exponent bits, 52 mantissa bits</li>
+<li>Machine epsilon: ε ≈ 2.22 × 10⁻¹⁶</li>
+<li>Represents ~15-17 decimal digits</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Condition Number</h4>
+<div class="formula">κ = |relative change in output|/|relative change in input|</div>
+<p><strong>Well-conditioned:</strong> κ small (≈1)<br>
+<strong>Ill-conditioned:</strong> κ large (≫1)</p>
+<p><strong>Example:</strong> For f(x) = √x at x = 100:<br>
+κ = |(x·f'(x))/f(x)| = 0.5</p>
+</div>
+
+<div class="component-card">
+<h4>Stability</h4>
+<p><strong>Numerically stable:</strong> Small errors don't grow exponentially</p>
+<p><strong>Unstable:</strong> Errors amplify, solution diverges</p>
+<p><strong>Example:</strong> Computing e^(-x) for large x directly is unstable; use e^(-x) = 1/e^x instead</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎯 Root Finding</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Bisection Method</h4>
+<p><strong>Idea:</strong> If f(a)f(b) < 0, root exists in (a,b) by IVT</p>
+<p><strong>Algorithm:</strong></p>
+<ol>
+<li>Compute c = (a+b)/2</li>
+<li>If f(a)f(c) < 0, set b = c; else set a = c</li>
+<li>Repeat until |b-a| < tolerance</li>
+</ol>
+<p><strong>Convergence:</strong> Linear, error halves each iteration</p>
+<p><strong>Guaranteed</strong> to converge but slow</p>
+</div>
+
+<div class="component-card">
+<h4>Newton's Method</h4>
+<div class="formula">x_{n+1} = x_n - f(x_n)/f'(x_n)</div>
+<p><strong>Geometric:</strong> Follow tangent line to x-axis</p>
+<p><strong>Convergence:</strong> Quadratic near root (doubles correct digits)</p>
+<p><strong>Drawbacks:</strong> Requires f', may diverge if poor initial guess</p>
+</div>
+
+<div class="component-card">
+<h4>Secant Method</h4>
+<div class="formula">x_{n+1} = x_n - f(x_n)(x_n-x_{n-1})/(f(x_n)-f(x_{n-1}))</div>
+<p>Approximates derivative with finite difference</p>
+<p><strong>Convergence:</strong> Superlinear (order φ ≈ 1.618)</p>
+<p>Doesn't require derivative, needs two initial points</p>
+</div>
+
+<div class="component-card">
+<h4>Fixed-Point Iteration</h4>
+<p>Reformulate f(x) = 0 as x = g(x)</p>
+<div class="formula">x_{n+1} = g(x_n)</div>
+<p><strong>Converges if |g'(x*)| < 1</strong> in neighborhood of root x*</p>
+<p><strong>Rate:</strong> Linear convergence</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📐 Interpolation</h2>
+
+<div class="theory-box">
+<h4>Polynomial Interpolation</h4>
+<p>Given n+1 points, unique polynomial P_n(x) of degree ≤ n passes through all points</p>
+<p><strong>Error bound:</strong> For f ∈ C^(n+1)[a,b],</p>
+<div class="formula">|f(x) - P_n(x)| ≤ M/(n+1)! |∏(x-xᵢ)|</div>
+<p>where M = max|f^(n+1)(ξ)| on [a,b]</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Lagrange Form</h4>
+<div class="formula">P_n(x) = Σᵢ f(xᵢ)Lᵢ(x)</div>
+<p>where Lᵢ(x) = ∏_{j≠i} (x-xⱼ)/(xᵢ-xⱼ)</p>
+<p><strong>Advantage:</strong> Explicit formula, easy to understand</p>
+<p><strong>Disadvantage:</strong> Adding point requires recalculating entire polynomial</p>
+</div>
+
+<div class="component-card">
+<h4>Newton Form</h4>
+<div class="formula">P_n(x) = f[x₀] + f[x₀,x₁](x-x₀) + ... + f[x₀,...,xₙ]∏(x-xᵢ)</div>
+<p><strong>Divided differences:</strong></p>
+<p>f[xᵢ,xᵢ₊₁] = (f(xᵢ₊₁)-f(xᵢ))/(xᵢ₊₁-xᵢ)</p>
+<p><strong>Advantage:</strong> Easy to add new points incrementally</p>
+</div>
+
+<div class="component-card">
+<h4>Cubic Splines</h4>
+<p>Piecewise cubic polynomials Sᵢ(x) on [xᵢ, xᵢ₊₁] with:</p>
+<ul>
+<li>Sᵢ(xᵢ) = f(xᵢ)</li>
+<li>Continuous S', S'' at interior knots</li>
+<li>Boundary conditions (natural, clamped, etc.)</li>
+</ul>
+<p><strong>Advantage:</strong> Smooth, avoids Runge phenomenon</p>
+</div>
+
+<div class="component-card">
+<h4>Runge Phenomenon</h4>
+<p>High-degree polynomial interpolation on equally-spaced points causes oscillation near boundaries</p>
+<p><strong>Solution:</strong> Use Chebyshev nodes or piecewise polynomials (splines)</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>∫ Numerical Integration</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Trapezoidal Rule</h4>
+<div class="formula">∫ᵃᵇ f(x)dx ≈ h/2[f(x₀) + 2f(x₁) + ... + 2f(x_{n-1}) + f(xₙ)]</div>
+<p>where h = (b-a)/n</p>
+<p><strong>Error:</strong> O(h²) for single interval, O(h²) composite</p>
+</div>
+
+<div class="component-card">
+<h4>Simpson's Rule</h4>
+<div class="formula">∫ᵃᵇ f(x)dx ≈ h/3[f(x₀) + 4f(x₁) + 2f(x₂) + 4f(x₃) + ... + f(xₙ)]</div>
+<p>Requires n even, uses parabolic approximation</p>
+<p><strong>Error:</strong> O(h⁴) - more accurate than trapezoidal</p>
+</div>
+
+<div class="component-card">
+<h4>Gaussian Quadrature</h4>
+<div class="formula">∫₋₁¹ f(x)dx ≈ Σᵢ wᵢf(xᵢ)</div>
+<p>Optimal choice of nodes xᵢ and weights wᵢ</p>
+<p>n-point rule exact for polynomials of degree ≤ 2n-1</p>
+<p><strong>Legendre-Gauss:</strong> Most common, uses roots of Legendre polynomials</p>
+</div>
+
+<div class="component-card">
+<h4>Adaptive Quadrature</h4>
+<p>Automatically refines mesh where function varies rapidly</p>
+<p><strong>Strategy:</strong></p>
+<ol>
+<li>Compute integral on [a,b]</li>
+<li>Compute integral on [a,c] and [c,b] where c = (a+b)/2</li>
+<li>If difference < tolerance, accept; else subdivide further</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>∂ Numerical Differentiation</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Finite Difference Formulas</h4>
+<p><strong>Forward difference:</strong><br>
+f'(x) ≈ (f(x+h) - f(x))/h, error O(h)</p>
+<p><strong>Backward difference:</strong><br>
+f'(x) ≈ (f(x) - f(x-h))/h, error O(h)</p>
+<p><strong>Central difference:</strong><br>
+f'(x) ≈ (f(x+h) - f(x-h))/(2h), error O(h²)</p>
+</div>
+
+<div class="component-card">
+<h4>Second Derivative</h4>
+<div class="formula">f''(x) ≈ (f(x+h) - 2f(x) + f(x-h))/h²</div>
+<p>Error: O(h²)</p>
+<p><strong>Challenge:</strong> Sensitive to round-off error as h → 0</p>
+</div>
+
+<div class="component-card">
+<h4>Richardson Extrapolation</h4>
+<p>Improve accuracy by combining estimates at different h:</p>
+<div class="formula">D(h) = 4D(h/2)/3 - D(h)/3</div>
+<p>Eliminates leading error term, increases order of accuracy</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔄 Solving Linear Systems</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Gaussian Elimination</h4>
+<p><strong>Algorithm:</strong></p>
+<ol>
+<li>Forward elimination: reduce to upper triangular</li>
+<li>Back substitution: solve from bottom up</li>
+</ol>
+<p><strong>Complexity:</strong> O(n³) operations</p>
+<p><strong>Pivoting:</strong> Swap rows to avoid division by small numbers (improves stability)</p>
+</div>
+
+<div class="component-card">
+<h4>LU Decomposition</h4>
+<p>Factor A = LU where L lower triangular, U upper triangular</p>
+<p><strong>Solve Ax = b:</strong></p>
+<ol>
+<li>Solve Ly = b (forward substitution)</li>
+<li>Solve Ux = y (back substitution)</li>
+</ol>
+<p><strong>Advantage:</strong> Efficient for multiple right-hand sides</p>
+</div>
+
+<div class="component-card">
+<h4>Iterative Methods: Jacobi</h4>
+<div class="formula">x_i^(k+1) = (b_i - Σ_{j≠i} a_{ij}x_j^(k))/a_{ii}</div>
+<p>Update all components simultaneously</p>
+<p><strong>Converges if</strong> A strictly diagonally dominant</p>
+</div>
+
+<div class="component-card">
+<h4>Gauss-Seidel Method</h4>
+<div class="formula">x_i^(k+1) = (b_i - Σ_{j<i} a_{ij}x_j^(k+1) - Σ_{j>i} a_{ij}x_j^(k))/a_{ii}</div>
+<p>Uses updated values immediately</p>
+<p>Generally converges faster than Jacobi</p>
+</div>
+
+<div class="component-card">
+<h4>Conjugate Gradient</h4>
+<p>For symmetric positive definite A</p>
+<p>Finds minimum of f(x) = ½x^TAx - b^Tx</p>
+<p><strong>Advantages:</strong></p>
+<ul>
+<li>No matrix storage needed (only matrix-vector products)</li>
+<li>Converges in n steps (theory), often much faster (practice)</li>
+<li>Excellent for large sparse systems</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📊 Initial Value Problems (ODEs)</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Euler's Method</h4>
+<p>For y' = f(t,y), y(t₀) = y₀:</p>
+<div class="formula">y_{n+1} = y_n + hf(t_n, y_n)</div>
+<p><strong>Geometric:</strong> Follow tangent line for step h</p>
+<p><strong>Error:</strong> Local O(h²), global O(h)</p>
+<p>Simple but inaccurate</p>
+</div>
+
+<div class="component-card">
+<h4>Runge-Kutta Methods</h4>
+<p><strong>RK2 (Midpoint):</strong><br>
+k₁ = hf(t_n, y_n)<br>
+k₂ = hf(t_n + h/2, y_n + k₁/2)<br>
+y_{n+1} = y_n + k₂</p>
+<p><strong>RK4 (Classical):</strong><br>
+y_{n+1} = y_n + (k₁ + 2k₂ + 2k₃ + k₄)/6</p>
+<p><strong>Error:</strong> O(h⁵) local, O(h⁴) global</p>
+</div>
+
+<div class="component-card">
+<h4>Multistep Methods</h4>
+<p><strong>Adams-Bashforth (explicit):</strong><br>
+Uses previous function values</p>
+<p><strong>Adams-Moulton (implicit):</strong><br>
+More stable, requires iteration</p>
+<p><strong>Advantage:</strong> Fewer function evaluations per step than RK</p>
+</div>
+
+<div class="component-card">
+<h4>Adaptive Step Size</h4>
+<p><strong>Strategy:</strong></p>
+<ol>
+<li>Take step with step size h</li>
+<li>Take two steps with step size h/2</li>
+<li>Estimate error from difference</li>
+<li>Adjust h to maintain tolerance</li>
+</ol>
+<p><strong>Methods:</strong> Runge-Kutta-Fehlberg (RKF45), Dormand-Prince</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>⚡ Applications</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Computational Physics</h4>
+<p><strong>N-body problem:</strong> RK4 for planetary motion</p>
+<p><strong>Wave equation:</strong> Finite difference methods</p>
+<p><strong>Quantum mechanics:</strong> Eigenvalue problems for Schrödinger equation</p>
+</div>
+
+<div class="component-card">
+<h4>Optimization</h4>
+<p><strong>Gradient descent:</strong> x_{k+1} = x_k - α∇f(x_k)</p>
+<p><strong>Newton's method:</strong> x_{k+1} = x_k - H⁻¹∇f(x_k) where H = Hessian</p>
+<p><strong>Quasi-Newton (BFGS):</strong> Approximate Hessian inverse</p>
+</div>
+
+<div class="component-card">
+<h4>Machine Learning</h4>
+<p><strong>Gradient descent variants:</strong> SGD, Adam, RMSprop</p>
+<p><strong>Linear algebra:</strong> SVD for PCA, QR for linear regression</p>
+<p><strong>Integration:</strong> Monte Carlo for high-dimensional integrals</p>
+</div>
+</div>
+</div>

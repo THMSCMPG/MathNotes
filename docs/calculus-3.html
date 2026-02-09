@@ -1,0 +1,189 @@
+---
+layout: MathNotes
+title: Calculus III
+subtitle: Multivariable Calculus and Vector Analysis
+---
+
+<div class="section">
+<h2>🌐 Vectors and 3D Space</h2>
+
+<div class="theory-box">
+<h4>Vector Operations</h4>
+<p><strong>Dot Product:</strong> <span class="formula">a·b = |a||b|cos θ = a₁b₁ + a₂b₂ + a₃b₃</span></p>
+<p><strong>Properties:</strong> Commutative, distributes over addition, a·b = 0 ⟹ perpendicular</p>
+<p><strong>Cross Product:</strong> <span class="formula">a×b = |a||b|sin θ n̂</span></p>
+<p>Results in vector perpendicular to both a and b, magnitude = area of parallelogram</p>
+</div>
+
+<table>
+<tr><th>Curve/Surface</th><th>Equation</th><th>Key Property</th></tr>
+<tr><td>Sphere</td><td>(x-h)² + (y-k)² + (z-l)² = r²</td><td>All points equidistant from center</td></tr>
+<tr><td>Cylinder</td><td>x² + y² = r²</td><td>Extends infinitely in z-direction</td></tr>
+<tr><td>Paraboloid</td><td>z = x² + y²</td><td>Bowl-shaped surface</td></tr>
+<tr><td>Plane</td><td>ax + by + cz = d</td><td>(a,b,c) is normal vector</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>∂ Partial Derivatives</h2>
+
+<div class="theory-box">
+<h4>Definition</h4>
+<p>For f(x,y), partial derivatives treat other variables as constants:</p>
+<div class="formula">
+∂f/∂x = lim_{h→0} [f(x+h,y) - f(x,y)]/h<br>
+∂f/∂y = lim_{h→0} [f(x,y+h) - f(x,y)]/h
+</div>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Chain Rule (Multivariable)</h4>
+<p>If z = f(x,y), x = g(t), y = h(t):</p>
+<div class="formula">dz/dt = (∂f/∂x)(dx/dt) + (∂f/∂y)(dy/dt)</div>
+<p><strong>General form:</strong> Sum over all intermediate variables</p>
+</div>
+
+<div class="component-card">
+<h4>Gradient</h4>
+<div class="formula">∇f = (∂f/∂x, ∂f/∂y, ∂f/∂z)</div>
+<p><strong>Properties:</strong></p>
+<ul>
+<li>Points in direction of maximum increase</li>
+<li>Perpendicular to level surfaces</li>
+<li>|∇f| = maximum directional derivative</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Directional Derivative</h4>
+<p>Rate of change of f in direction of unit vector u:</p>
+<div class="formula">D_u f = ∇f · u</div>
+<p>Maximum when u aligns with ∇f</p>
+</div>
+
+<div class="component-card">
+<h4>Tangent Plane</h4>
+<p>At point (a,b,c) on surface z = f(x,y):</p>
+<div class="formula">z = f(a,b) + f_x(a,b)(x-a) + f_y(a,b)(y-b)</div>
+<p>Linear approximation in 3D</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎯 Optimization</h2>
+
+<div class="theory-box">
+<h4>Critical Points</h4>
+<p>Points where ∇f = 0 or doesn't exist. For f(x,y), solve:</p>
+<div class="formula">∂f/∂x = 0, ∂f/∂y = 0</div>
+</div>
+
+<div class="component-card">
+<h4>Second Derivative Test</h4>
+<p>At critical point (a,b), define:</p>
+<div class="formula">
+D = f_{xx}f_{yy} - (f_{xy})²
+</div>
+<ul>
+<li>D > 0, f_{xx} > 0: local minimum</li>
+<li>D > 0, f_{xx} < 0: local maximum</li>
+<li>D < 0: saddle point</li>
+<li>D = 0: test inconclusive</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Lagrange Multipliers</h4>
+<p>To optimize f(x,y,z) subject to constraint g(x,y,z) = k:</p>
+<div class="formula">∇f = λ∇g</div>
+<p>Solve system: ∂f/∂x = λ∂g/∂x, etc., plus g = k</p>
+<p><strong>Interpretation:</strong> Gradients parallel at extrema</p>
+</div>
+</div>
+
+<div class="section">
+<h2>∫∫ Multiple Integrals</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Double Integral</h4>
+<div class="formula">∫∫_R f(x,y)dA = ∫_a^b ∫_c^d f(x,y)dydx</div>
+<p><strong>Fubini's Theorem:</strong> Can integrate in either order if continuous</p>
+<p><strong>Applications:</strong> Volume under surface, mass, average value</p>
+</div>
+
+<div class="component-card">
+<h4>Polar Coordinates</h4>
+<div class="formula">∫∫_R f(x,y)dA = ∫∫ f(r cos θ, r sin θ)r dr dθ</div>
+<p><strong>Key:</strong> Include Jacobian factor r</p>
+<p><strong>Use when:</strong> Circular symmetry present</p>
+</div>
+
+<div class="component-card">
+<h4>Triple Integral</h4>
+<div class="formula">∫∫∫_E f(x,y,z)dV</div>
+<p><strong>Cylindrical:</strong> dV = r dz dr dθ</p>
+<p><strong>Spherical:</strong> dV = ρ² sin φ dρ dφ dθ</p>
+<p>Choose coordinates matching symmetry</p>
+</div>
+
+<div class="component-card">
+<h4>Change of Variables</h4>
+<div class="formula">∫∫_R f(x,y)dA = ∫∫_S f(x(u,v), y(u,v))|J|dudv</div>
+<p><strong>Jacobian:</strong> J = ∂(x,y)/∂(u,v) = determinant of transformation matrix</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🌊 Vector Fields</h2>
+
+<div class="theory-box">
+<h4>Line Integrals</h4>
+<p><strong>Scalar function:</strong> ∫_C f ds = work against constant force</p>
+<p><strong>Vector field:</strong> ∫_C F·dr = work done by force field F along curve C</p>
+<div class="formula">∫_C F·dr = ∫_a^b F(r(t))·r'(t)dt</div>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Fundamental Theorem for Line Integrals</h4>
+<p>If F = ∇f (conservative field), then:</p>
+<div class="formula">∫_C F·dr = f(r(b)) - f(r(a))</div>
+<p>Path-independent, depends only on endpoints</p>
+</div>
+
+<div class="component-card">
+<h4>Green's Theorem</h4>
+<p>For region D with boundary curve C:</p>
+<div class="formula">∮_C F·dr = ∫∫_D (∂Q/∂x - ∂P/∂y)dA</div>
+<p>Relates line integral to double integral</p>
+</div>
+
+<div class="component-card">
+<h4>Curl and Divergence</h4>
+<div class="formula">
+curl F = ∇×F = measure of rotation<br>
+div F = ∇·F = measure of expansion
+</div>
+<p><strong>Irrotational:</strong> curl F = 0<br>
+<strong>Incompressible:</strong> div F = 0</p>
+</div>
+
+<div class="component-card">
+<h4>Stokes' Theorem</h4>
+<div class="formula">∫∫_S (curl F)·dS = ∮_C F·dr</div>
+<p>Relates surface integral to boundary line integral</p>
+<p>Generalizes Green's theorem to 3D</p>
+</div>
+
+<div class="component-card">
+<h4>Divergence Theorem (Gauss)</h4>
+<div class="formula">∫∫∫_E div F dV = ∫∫_S F·dS</div>
+<p>Relates triple integral to surface integral</p>
+<p><strong>Application:</strong> Fluid flow, electromagnetic flux</p>
+</div>
+</div>
+</div>

@@ -1,0 +1,273 @@
+---
+layout: MathNotes
+title: Statistical Methods
+subtitle: Probability Theory, Statistical Inference, and Data Analysis
+---
+
+<div class="section">
+<h2>🎲 Probability Foundations</h2>
+
+<div class="theory-box">
+<h4>Axioms of Probability</h4>
+<p>For sample space S and event A:</p>
+<ol>
+<li>0 ≤ P(A) ≤ 1</li>
+<li>P(S) = 1</li>
+<li>For mutually exclusive events: P(A∪B) = P(A) + P(B)</li>
+</ol>
+<p><strong>Addition Rule:</strong> P(A∪B) = P(A) + P(B) - P(A∩B)</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Conditional Probability</h4>
+<div class="formula">P(A|B) = P(A∩B)/P(B)</div>
+<p><strong>Independence:</strong> P(A|B) = P(A) ⟺ P(A∩B) = P(A)P(B)</p>
+</div>
+
+<div class="component-card">
+<h4>Bayes' Theorem</h4>
+<div class="formula">P(A|B) = P(B|A)P(A)/P(B)</div>
+<p><strong>Extended form:</strong><br>
+P(Aᵢ|B) = P(B|Aᵢ)P(Aᵢ) / ΣP(B|Aⱼ)P(Aⱼ)</p>
+<p>Foundation of Bayesian inference</p>
+</div>
+
+<div class="component-card">
+<h4>Counting Principles</h4>
+<p><strong>Permutations:</strong> P(n,r) = n!/(n-r)!<br>
+<strong>Combinations:</strong> C(n,r) = n!/[r!(n-r)!]</p>
+<p><strong>Binomial coefficient:</strong> (n choose r)</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📊 Random Variables</h2>
+
+<div class="theory-box">
+<h4>Discrete Random Variables</h4>
+<p><strong>PMF (Probability Mass Function):</strong> P(X = x) = p(x)</p>
+<p><strong>CDF (Cumulative Distribution):</strong> F(x) = P(X ≤ x) = Σ_{t≤x} p(t)</p>
+</div>
+
+<table>
+<tr><th>Distribution</th><th>PMF/PDF</th><th>E[X]</th><th>Var(X)</th></tr>
+<tr><td>Binomial(n,p)</td><td>C(n,k)p^k(1-p)^(n-k)</td><td>np</td><td>np(1-p)</td></tr>
+<tr><td>Poisson(λ)</td><td>λ^k e^(-λ)/k!</td><td>λ</td><td>λ</td></tr>
+<tr><td>Geometric(p)</td><td>p(1-p)^(k-1)</td><td>1/p</td><td>(1-p)/p²</td></tr>
+<tr><td>Uniform(a,b)</td><td>1/(b-a)</td><td>(a+b)/2</td><td>(b-a)²/12</td></tr>
+<tr><td>Normal(μ,σ²)</td><td>(2πσ²)^(-1/2)e^(-(x-μ)²/2σ²)</td><td>μ</td><td>σ²</td></tr>
+<tr><td>Exponential(λ)</td><td>λe^(-λx)</td><td>1/λ</td><td>1/λ²</td></tr>
+</table>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Expected Value</h4>
+<p><strong>Discrete:</strong> E[X] = Σ x·p(x)</p>
+<p><strong>Continuous:</strong> E[X] = ∫ x·f(x)dx</p>
+<p><strong>Linearity:</strong> E[aX + bY] = aE[X] + bE[Y]</p>
+</div>
+
+<div class="component-card">
+<h4>Variance</h4>
+<div class="formula">Var(X) = E[(X-μ)²] = E[X²] - (E[X])²</div>
+<p><strong>Properties:</strong><br>
+Var(aX + b) = a²Var(X)<br>
+If independent: Var(X + Y) = Var(X) + Var(Y)</p>
+</div>
+
+<div class="component-card">
+<h4>Moment Generating Function</h4>
+<div class="formula">M_X(t) = E[e^(tX)]</div>
+<p><strong>Properties:</strong></p>
+<ul>
+<li>E[X^n] = M_X^(n)(0)</li>
+<li>For independent X,Y: M_{X+Y} = M_X·M_Y</li>
+<li>Uniquely determines distribution</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎯 Central Limit Theorem</h2>
+
+<div class="theory-box">
+<h4>Statement</h4>
+<p>If X₁, X₂, ..., Xₙ are iid with mean μ and variance σ², then:</p>
+<div class="formula">
+Z = (X̄ - μ)/(σ/√n) → N(0,1) as n→∞
+</div>
+<p>where X̄ = (X₁ + ... + Xₙ)/n is the sample mean</p>
+<p><strong>Practical Rule:</strong> n ≥ 30 usually sufficient for normal approximation</p>
+</div>
+
+<div class="component-card">
+<h4>Law of Large Numbers</h4>
+<p>Sample mean X̄ converges to population mean μ as n→∞</p>
+<p><strong>Weak LLN:</strong> P(|X̄ₙ - μ| > ε) → 0<br>
+<strong>Strong LLN:</strong> P(lim X̄ₙ = μ) = 1</p>
+</div>
+</div>
+
+<div class="section">
+<h2>📈 Statistical Inference</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Point Estimation</h4>
+<p><strong>Sample mean:</strong> X̄ = Σxᵢ/n (unbiased for μ)</p>
+<p><strong>Sample variance:</strong> s² = Σ(xᵢ-X̄)²/(n-1)</p>
+<p><strong>Properties:</strong></p>
+<ul>
+<li>Unbiased: E[θ̂] = θ</li>
+<li>Consistent: θ̂ → θ as n→∞</li>
+<li>Efficient: minimum variance among unbiased estimators</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Confidence Intervals</h4>
+<p><strong>For mean μ (σ known):</strong></p>
+<div class="formula">X̄ ± z_{α/2}(σ/√n)</div>
+<p><strong>For mean μ (σ unknown):</strong></p>
+<div class="formula">X̄ ± t_{α/2}(s/√n)</div>
+<p>where t has n-1 degrees of freedom</p>
+<p><strong>Interpretation:</strong> 95% CI means method captures true parameter 95% of the time</p>
+</div>
+
+<div class="component-card">
+<h4>Hypothesis Testing</h4>
+<p><strong>Structure:</strong></p>
+<ul>
+<li>H₀: null hypothesis (status quo)</li>
+<li>Hₐ: alternative hypothesis</li>
+<li>Test statistic: measures evidence against H₀</li>
+<li>p-value: P(observe data | H₀ true)</li>
+</ul>
+<p><strong>Decision:</strong> Reject H₀ if p-value < α (significance level)</p>
+</div>
+
+<div class="component-card">
+<h4>Type I and II Errors</h4>
+<table style="font-size: 0.85em;">
+<tr><td></td><th>H₀ True</th><th>H₀ False</th></tr>
+<tr><th>Reject H₀</th><td>Type I Error (α)</td><td>Correct</td></tr>
+<tr><th>Fail to Reject</th><td>Correct</td><td>Type II Error (β)</td></tr>
+</table>
+<p><strong>Power:</strong> 1 - β = P(reject H₀ | Hₐ true)</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔄 Common Hypothesis Tests</h2>
+
+<table>
+<tr><th>Test</th><th>Hypotheses</th><th>Test Statistic</th><th>When to Use</th></tr>
+<tr><td>One-sample t</td><td>H₀: μ = μ₀</td><td>t = (X̄-μ₀)/(s/√n)</td><td>One population mean, σ unknown</td></tr>
+<tr><td>Two-sample t</td><td>H₀: μ₁ = μ₂</td><td>t = (X̄₁-X̄₂)/√(s₁²/n₁+s₂²/n₂)</td><td>Compare two means</td></tr>
+<tr><td>Paired t</td><td>H₀: μ_d = 0</td><td>t = d̄/(s_d/√n)</td><td>Matched pairs</td></tr>
+<tr><td>χ² goodness-of-fit</td><td>H₀: distribution fits</td><td>Σ(O-E)²/E</td><td>Test distribution</td></tr>
+<tr><td>χ² independence</td><td>H₀: variables independent</td><td>Σ(O-E)²/E</td><td>Contingency tables</td></tr>
+<tr><td>F-test (ANOVA)</td><td>H₀: μ₁=μ₂=...=μₖ</td><td>F = MSB/MSW</td><td>Compare k > 2 means</td></tr>
+</table>
+</div>
+
+<div class="section">
+<h2>📐 Linear Regression</h2>
+
+<div class="theory-box">
+<h4>Simple Linear Regression</h4>
+<p>Model: Y = β₀ + β₁X + ε, where ε ~ N(0,σ²)</p>
+<p><strong>Least Squares Estimates:</strong></p>
+<div class="formula">
+β̂₁ = Σ(xᵢ-x̄)(yᵢ-ȳ)/Σ(xᵢ-x̄)² = r(s_y/s_x)<br>
+β̂₀ = ȳ - β̂₁x̄
+</div>
+<p>where r = correlation coefficient</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Coefficient of Determination</h4>
+<div class="formula">R² = 1 - SSE/SST = SSR/SST</div>
+<p><strong>Interpretation:</strong> Proportion of variance in Y explained by X</p>
+<p>For simple regression: R² = r²</p>
+</div>
+
+<div class="component-card">
+<h4>Assumptions</h4>
+<ol>
+<li>Linearity: E[Y|X] = β₀ + β₁X</li>
+<li>Independence: Errors uncorrelated</li>
+<li>Normality: ε ~ N(0,σ²)</li>
+<li>Equal variance: Var(ε) = σ² (homoscedasticity)</li>
+</ol>
+<p><strong>Diagnostics:</strong> Residual plots</p>
+</div>
+
+<div class="component-card">
+<h4>Multiple Regression</h4>
+<div class="formula">Y = β₀ + β₁X₁ + ... + βₚXₚ + ε</div>
+<p><strong>Matrix form:</strong> Y = Xβ + ε<br>
+<strong>Estimate:</strong> β̂ = (X'X)⁻¹X'Y</p>
+<p><strong>Adjusted R²:</strong> Penalizes adding predictors</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔬 ANOVA</h2>
+
+<div class="theory-box">
+<h4>One-Way ANOVA</h4>
+<p>Tests H₀: μ₁ = μ₂ = ... = μₖ (all group means equal)</p>
+<p><strong>F-statistic:</strong> F = MSB/MSW</p>
+<p>where MSB = between-group variance, MSW = within-group variance</p>
+</div>
+
+<table>
+<tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th></tr>
+<tr><td>Between groups</td><td>SSB</td><td>k-1</td><td>SSB/(k-1)</td><td>MSB/MSW</td></tr>
+<tr><td>Within groups</td><td>SSW</td><td>n-k</td><td>SSW/(n-k)</td><td></td></tr>
+<tr><td>Total</td><td>SST</td><td>n-1</td><td></td><td></td></tr>
+</table>
+
+<p><strong>Post-hoc tests:</strong> If F significant, use Tukey HSD, Bonferroni, etc. to identify which groups differ</p>
+</div>
+
+<div class="section">
+<h2>⚡ Nonparametric Methods</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Sign Test</h4>
+<p>Tests median without normality assumption</p>
+<p>Count observations above/below hypothesized median</p>
+<p>Uses binomial distribution</p>
+</div>
+
+<div class="component-card">
+<h4>Wilcoxon Signed-Rank</h4>
+<p>Paired data alternative to t-test</p>
+<p>Ranks absolute differences, considers signs</p>
+<p>More powerful than sign test</p>
+</div>
+
+<div class="component-card">
+<h4>Mann-Whitney U</h4>
+<p>Two independent samples</p>
+<p>Alternative to two-sample t-test</p>
+<p>Based on ranks of combined data</p>
+</div>
+
+<div class="component-card">
+<h4>Kruskal-Wallis</h4>
+<p>Nonparametric ANOVA for k groups</p>
+<p>Tests if samples come from same distribution</p>
+<p>Based on rank sums</p>
+</div>
+</div>
+</div>

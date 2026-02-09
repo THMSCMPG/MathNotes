@@ -1,0 +1,368 @@
+---
+layout: MathNotes
+title: Linear Algebra
+subtitle: Vector Spaces, Linear Transformations, and Matrix Theory
+---
+
+<div class="section">
+<h2>📊 Vector Spaces</h2>
+
+<div class="theory-box">
+<h4>Axiomatic Definition</h4>
+<p>A vector space V over a field F (typically ℝ or ℂ) is a set equipped with two operations:</p>
+<ul>
+<li><strong>Vector addition:</strong> V × V → V, written as u + v</li>
+<li><strong>Scalar multiplication:</strong> F × V → V, written as c·v</li>
+</ul>
+<p>satisfying 10 axioms: associativity, commutativity of addition, additive identity (zero vector), additive inverses, 
+multiplicative identity, and distributive properties.</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Standard Examples</h4>
+<ul>
+<li><strong>ℝⁿ:</strong> n-tuples of real numbers with componentwise operations</li>
+<li><strong>Matrices M_{m×n}:</strong> All m×n matrices with matrix addition and scalar multiplication</li>
+<li><strong>Polynomials P_n:</strong> Polynomials of degree ≤ n with standard operations</li>
+<li><strong>Function Spaces C[a,b]:</strong> Continuous functions on [a,b] with pointwise operations</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Subspaces</h4>
+<p>A subset W ⊆ V is a subspace if:</p>
+<ol>
+<li>0 ∈ W (contains zero vector)</li>
+<li>Closed under addition: u, v ∈ W ⟹ u + v ∈ W</li>
+<li>Closed under scalar multiplication: v ∈ W, c ∈ F ⟹ c·v ∈ W</li>
+</ol>
+<p><strong>Example:</strong> Solution space of homogeneous system Ax = 0 forms a subspace of ℝⁿ.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎯 Linear Independence and Bases</h2>
+
+<div class="theory-box">
+<h4>Linear Independence</h4>
+<p>Vectors v₁, v₂, ..., vₖ are <strong>linearly independent</strong> if the equation:</p>
+<div class="formula">c₁v₁ + c₂v₂ + ... + cₖvₖ = 0</div>
+<p>implies c₁ = c₂ = ... = cₖ = 0. Otherwise, they are <strong>linearly dependent</strong>.</p>
+<p><strong>Geometric Intuition:</strong> In ℝ³, three vectors are independent if they don't lie in the same plane through the origin.</p>
+</div>
+
+<div class="theory-box">
+<h4>Basis and Dimension</h4>
+<p>A <strong>basis</strong> for vector space V is a linearly independent spanning set. 
+Key theorem: All bases of a finite-dimensional vector space have the same number of vectors, called the <strong>dimension</strong>.</p>
+<div class="formula">dim(ℝⁿ) = n, dim(P_n) = n+1, dim(M_{m×n}) = mn</div>
+</div>
+
+<table>
+<tr>
+<th>Vector Space</th>
+<th>Standard Basis</th>
+<th>Dimension</th>
+</tr>
+<tr>
+<td>ℝ³</td>
+<td>{(1,0,0), (0,1,0), (0,0,1)}</td>
+<td>3</td>
+</tr>
+<tr>
+<td>P₂ (polynomials deg ≤ 2)</td>
+<td>{1, x, x²}</td>
+<td>3</td>
+</tr>
+<tr>
+<td>M₂×₂ (2×2 matrices)</td>
+<td>Four matrices with single 1 entry</td>
+<td>4</td>
+</tr>
+</table>
+</div>
+
+<div class="section">
+<h2>⚡ Matrix Operations</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Matrix Multiplication</h4>
+<p>For A (m×n) and B (n×p):</p>
+<div class="formula">(AB)ᵢⱼ = Σₖ aᵢₖbₖⱼ</div>
+<p><strong>Not commutative:</strong> Generally AB ≠ BA<br>
+<strong>Associative:</strong> (AB)C = A(BC)<br>
+<strong>Distributive:</strong> A(B + C) = AB + AC</p>
+</div>
+
+<div class="component-card">
+<h4>Transpose Properties</h4>
+<div class="formula">
+(A^T)^T = A<br>
+(A + B)^T = A^T + B^T<br>
+(AB)^T = B^T A^T<br>
+(cA)^T = c A^T
+</div>
+<p><strong>Symmetric matrices:</strong> A = A^T<br>
+<strong>Skew-symmetric:</strong> A = -A^T</p>
+</div>
+
+<div class="component-card">
+<h4>Determinant</h4>
+<p>For 2×2 matrix:</p>
+<div class="formula">det([a b; c d]) = ad - bc</div>
+<p>For n×n matrix, use cofactor expansion along any row or column.</p>
+<p><strong>Properties:</strong><br>
+det(AB) = det(A)det(B)<br>
+det(A^T) = det(A)<br>
+det(cA) = c^n det(A) for n×n matrix</p>
+</div>
+
+<div class="component-card">
+<h4>Matrix Inverse</h4>
+<p>A is invertible iff det(A) ≠ 0:</p>
+<div class="formula">A A^(-1) = A^(-1) A = I</div>
+<p><strong>Properties:</strong><br>
+(A^(-1))^(-1) = A<br>
+(AB)^(-1) = B^(-1) A^(-1)<br>
+(A^T)^(-1) = (A^(-1))^T</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔄 Linear Transformations</h2>
+
+<div class="theory-box">
+<h4>Definition</h4>
+<p>A function T: V → W between vector spaces is a <strong>linear transformation</strong> if:</p>
+<ol>
+<li>T(u + v) = T(u) + T(v) for all u, v ∈ V</li>
+<li>T(cv) = cT(v) for all v ∈ V and scalars c</li>
+</ol>
+<p><strong>Matrix Representation:</strong> Every linear transformation T: ℝⁿ → ℝᵐ can be represented by an m×n matrix A where T(x) = Ax.</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Kernel (Null Space)</h4>
+<div class="formula">ker(T) = {v ∈ V : T(v) = 0}</div>
+<p>Always a subspace of V. For matrix A:</p>
+<div class="formula">Null(A) = {x : Ax = 0}</div>
+<p><strong>Dimension:</strong> nullity(A) = n - rank(A)</p>
+</div>
+
+<div class="component-card">
+<h4>Image (Range/Column Space)</h4>
+<div class="formula">Im(T) = {T(v) : v ∈ V}</div>
+<p>Always a subspace of W. For matrix A:</p>
+<div class="formula">Col(A) = span of column vectors</div>
+<p><strong>Dimension:</strong> rank(A) = dim(Col(A))</p>
+</div>
+
+<div class="component-card">
+<h4>Rank-Nullity Theorem</h4>
+<div class="formula">dim(V) = rank(T) + nullity(T)</div>
+<p>For an m×n matrix A:</p>
+<div class="formula">n = rank(A) + nullity(A)</div>
+<p><strong>Interpretation:</strong> Dimensions of domain = dimensions mapped to range + dimensions collapsed to zero.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎨 Eigenvalues and Eigenvectors</h2>
+
+<div class="theory-box">
+<h4>Fundamental Definitions</h4>
+<p>For square matrix A, a nonzero vector v is an <strong>eigenvector</strong> with <strong>eigenvalue</strong> λ if:</p>
+<div class="formula">Av = λv</div>
+<p>This means v is scaled by λ under transformation A, without changing direction.</p>
+<p><strong>Characteristic Equation:</strong> det(A - λI) = 0</p>
+<p>The roots of this polynomial are the eigenvalues of A.</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Eigenspace</h4>
+<p>For eigenvalue λ:</p>
+<div class="formula">E_λ = {v : Av = λv} = Null(A - λI)</div>
+<p>The eigenspace is the subspace of all eigenvectors with eigenvalue λ, plus the zero vector.</p>
+</div>
+
+<div class="component-card">
+<h4>Diagonalization</h4>
+<p>A is diagonalizable if:</p>
+<div class="formula">A = PDP^(-1)</div>
+<p>where D is diagonal with eigenvalues and P has corresponding eigenvectors as columns.</p>
+<p><strong>Criterion:</strong> A is diagonalizable iff it has n linearly independent eigenvectors.</p>
+</div>
+
+<div class="component-card">
+<h4>Power Computation</h4>
+<p>If A = PDP^(-1), then:</p>
+<div class="formula">A^k = PD^k P^(-1)</div>
+<p>Computing D^k is trivial (raise diagonal entries to k-th power), making large matrix powers efficient.</p>
+</div>
+
+<div class="component-card">
+<h4>Spectral Theorem</h4>
+<p>A real symmetric matrix A has:</p>
+<ul>
+<li>All real eigenvalues</li>
+<li>Orthogonal eigenvectors</li>
+<li>Orthogonal diagonalization: A = QΛQ^T</li>
+</ul>
+<p>where Q is orthogonal (Q^T Q = I) and Λ is diagonal.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📏 Inner Products and Orthogonality</h2>
+
+<div class="theory-box">
+<h4>Inner Product Spaces</h4>
+<p>An inner product on vector space V is a function ⟨·,·⟩: V × V → ℝ satisfying:</p>
+<ul>
+<li>Linearity in first argument</li>
+<li>Symmetry: ⟨u,v⟩ = ⟨v,u⟩</li>
+<li>Positive definiteness: ⟨v,v⟩ ≥ 0, with equality iff v = 0</li>
+</ul>
+<p><strong>Standard inner product on ℝⁿ:</strong> ⟨x,y⟩ = x·y = Σ xᵢyᵢ</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Norm and Distance</h4>
+<div class="formula">
+‖v‖ = √⟨v,v⟩<br>
+d(u,v) = ‖u - v‖
+</div>
+<p><strong>Cauchy-Schwarz Inequality:</strong></p>
+<div class="formula">|⟨u,v⟩| ≤ ‖u‖·‖v‖</div>
+<p>Equality holds iff u and v are linearly dependent.</p>
+</div>
+
+<div class="component-card">
+<h4>Orthogonality</h4>
+<p>Vectors u and v are <strong>orthogonal</strong> if:</p>
+<div class="formula">⟨u,v⟩ = 0</div>
+<p><strong>Orthonormal basis:</strong> Basis {v₁,...,vₙ} with ⟨vᵢ,vⱼ⟩ = δᵢⱼ (Kronecker delta)</p>
+<p><strong>Advantage:</strong> Easy coordinate computation: x = Σ⟨x,vᵢ⟩vᵢ</p>
+</div>
+
+<div class="component-card">
+<h4>Gram-Schmidt Process</h4>
+<p>Converts linearly independent set {v₁,...,vₖ} to orthonormal set {u₁,...,uₖ}:</p>
+<ol>
+<li>u₁ = v₁/‖v₁‖</li>
+<li>w₂ = v₂ - ⟨v₂,u₁⟩u₁, then u₂ = w₂/‖w₂‖</li>
+<li>Continue: subtract projections onto previous vectors, then normalize</li>
+</ol>
+</div>
+
+<div class="component-card">
+<h4>Orthogonal Projection</h4>
+<p>Projection of v onto subspace W with orthonormal basis {u₁,...,uₖ}:</p>
+<div class="formula">proj_W(v) = Σᵢ⟨v,uᵢ⟩uᵢ</div>
+<p><strong>Best Approximation Theorem:</strong> proj_W(v) is the closest vector in W to v.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔬 Advanced Topics</h2>
+
+<div class="theory-box">
+<h4>Singular Value Decomposition (SVD)</h4>
+<p>Any m×n matrix A can be factored as:</p>
+<div class="formula">A = UΣV^T</div>
+<p>where U (m×m) and V (n×n) are orthogonal, and Σ is m×n diagonal with non-negative singular values σ₁ ≥ σ₂ ≥ ... ≥ 0.</p>
+<p><strong>Applications:</strong></p>
+<ul>
+<li>Data compression and dimensionality reduction</li>
+<li>Principal Component Analysis (PCA)</li>
+<li>Pseudoinverse computation</li>
+<li>Low-rank approximations</li>
+</ul>
+</div>
+
+<div class="theory-box">
+<h4>Jordan Canonical Form</h4>
+<p>Every matrix A over ℂ is similar to a Jordan matrix J:</p>
+<div class="formula">A = PJP^(-1)</div>
+<p>where J consists of Jordan blocks for each eigenvalue. This generalizes diagonalization for matrices 
+that lack sufficient eigenvectors.</p>
+</div>
+</div>
+
+<div class="section">
+<h2>⚡ Computational Methods</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Gaussian Elimination</h4>
+<p>Systematic row operations to achieve row echelon form:</p>
+<ol>
+<li>Forward elimination: create zeros below pivots</li>
+<li>Back substitution: solve from bottom row up</li>
+</ol>
+<p><strong>Complexity:</strong> O(n³) for n×n system</p>
+</div>
+
+<div class="component-card">
+<h4>LU Decomposition</h4>
+<div class="formula">A = LU</div>
+<p>L is lower triangular, U is upper triangular. Efficient for solving multiple systems Ax = b with same A but different b.</p>
+</div>
+
+<div class="component-card">
+<h4>QR Decomposition</h4>
+<div class="formula">A = QR</div>
+<p>Q is orthogonal, R is upper triangular. Numerically stable method for least squares problems and eigenvalue computation.</p>
+</div>
+
+<div class="component-card">
+<h4>Power Method</h4>
+<p>Iterative algorithm to find dominant eigenvalue:</p>
+<ol>
+<li>Start with random vector x₀</li>
+<li>Iterate: x_{k+1} = Ax_k/‖Ax_k‖</li>
+<li>Converges to eigenvector of largest |λ|</li>
+</ol>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>💡 Applications in Physics and Engineering</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Quantum Mechanics</h4>
+<p>State vectors in Hilbert space, operators as matrices, eigenvalues as observable measurements. 
+The Hamiltonian operator's eigenvectors are energy eigenstates.</p>
+</div>
+
+<div class="component-card">
+<h4>Differential Equations</h4>
+<p>System x' = Ax solved via eigenvalues: general solution is linear combination of e^(λt)v where (λ,v) 
+are eigenvalue-eigenvector pairs of A.</p>
+</div>
+
+<div class="component-card">
+<h4>Computer Graphics</h4>
+<p>Rotations, scaling, shearing represented as matrices. Composite transformations via matrix multiplication. 
+Homogeneous coordinates enable translations as matrix operations.</p>
+</div>
+
+<div class="component-card">
+<h4>Machine Learning</h4>
+<p>PCA for dimensionality reduction, least squares for linear regression, gradient descent updates 
+involve matrix-vector products, neural network layers are linear transformations.</p>
+</div>
+</div>
+</div>

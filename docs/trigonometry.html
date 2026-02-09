@@ -1,0 +1,289 @@
+---
+layout: MathNotes
+title: Trigonometry
+subtitle: Circular Functions, Identities, and Applications
+---
+
+<div class="section">
+<h2>🔄 Fundamental Definitions</h2>
+
+<div class="theory-box">
+<h4>Unit Circle Definition</h4>
+<p>For an angle θ measured counterclockwise from the positive x-axis on the unit circle (x² + y² = 1), 
+the trigonometric functions are defined by the coordinates of the terminal point:</p>
+<div class="formula">
+cos(θ) = x-coordinate<br>
+sin(θ) = y-coordinate<br>
+tan(θ) = y/x = sin(θ)/cos(θ)
+</div>
+<p><strong>Geometric Insight:</strong> The unit circle provides a natural extension of triangle-based definitions to all real angles, 
+enabling periodic functions essential for wave phenomena and oscillatory systems.</p>
+</div>
+
+<table>
+<tr>
+<th>Function</th>
+<th>Definition</th>
+<th>Domain</th>
+<th>Range</th>
+<th>Period</th>
+</tr>
+<tr>
+<td>sin(θ)</td>
+<td>y-coordinate on unit circle</td>
+<td>ℝ</td>
+<td>[-1, 1]</td>
+<td>2π</td>
+</tr>
+<tr>
+<td>cos(θ)</td>
+<td>x-coordinate on unit circle</td>
+<td>ℝ</td>
+<td>[-1, 1]</td>
+<td>2π</td>
+</tr>
+<tr>
+<td>tan(θ)</td>
+<td>sin(θ)/cos(θ)</td>
+<td>ℝ \ {π/2 + nπ}</td>
+<td>ℝ</td>
+<td>π</td>
+</tr>
+<tr>
+<td>csc(θ)</td>
+<td>1/sin(θ)</td>
+<td>ℝ \ {nπ}</td>
+<td>(-∞,-1] ∪ [1,∞)</td>
+<td>2π</td>
+</tr>
+<tr>
+<td>sec(θ)</td>
+<td>1/cos(θ)</td>
+<td>ℝ \ {π/2 + nπ}</td>
+<td>(-∞,-1] ∪ [1,∞)</td>
+<td>2π</td>
+</tr>
+<tr>
+<td>cot(θ)</td>
+<td>cos(θ)/sin(θ)</td>
+<td>ℝ \ {nπ}</td>
+<td>ℝ</td>
+<td>π</td>
+</tr>
+</table>
+</div>
+
+<div class="section">
+<h2>🎯 Fundamental Identities</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Pythagorean Identity</h4>
+<div class="formula">sin²(θ) + cos²(θ) = 1</div>
+<p><strong>Derivation:</strong> Direct consequence of the unit circle definition, where x² + y² = 1.</p>
+<p><strong>Extensions:</strong><br>
+1 + tan²(θ) = sec²(θ)<br>
+1 + cot²(θ) = csc²(θ)</p>
+</div>
+
+<div class="component-card">
+<h4>Sum and Difference Formulas</h4>
+<div class="formula">
+sin(α ± β) = sin(α)cos(β) ± cos(α)sin(β)<br>
+cos(α ± β) = cos(α)cos(β) ∓ sin(α)sin(β)
+</div>
+<p><strong>Application:</strong> Essential for deriving double-angle formulas and solving trigonometric equations.</p>
+</div>
+
+<div class="component-card">
+<h4>Double-Angle Formulas</h4>
+<div class="formula">
+sin(2θ) = 2sin(θ)cos(θ)<br>
+cos(2θ) = cos²(θ) - sin²(θ) = 2cos²(θ) - 1 = 1 - 2sin²(θ)
+</div>
+<p><strong>Power Reduction:</strong><br>
+sin²(θ) = (1 - cos(2θ))/2<br>
+cos²(θ) = (1 + cos(2θ))/2</p>
+</div>
+
+<div class="component-card">
+<h4>Product-to-Sum Formulas</h4>
+<div class="formula">
+sin(α)sin(β) = ½[cos(α-β) - cos(α+β)]<br>
+cos(α)cos(β) = ½[cos(α-β) + cos(α+β)]
+</div>
+<p><strong>Use Case:</strong> Simplifying integrals and solving differential equations in physics.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📐 Law of Sines and Cosines</h2>
+
+<div class="theory-box">
+<h4>Law of Sines</h4>
+<div class="formula">
+a/sin(A) = b/sin(B) = c/sin(C) = 2R
+</div>
+<p>Where R is the circumradius of the triangle. This law is invaluable for solving triangles when given:</p>
+<ul>
+<li>Two angles and one side (AAS or ASA)</li>
+<li>Two sides and a non-included angle (SSA - ambiguous case)</li>
+</ul>
+</div>
+
+<div class="theory-box">
+<h4>Law of Cosines</h4>
+<div class="formula">
+c² = a² + b² - 2ab·cos(C)
+</div>
+<p><strong>Generalization:</strong> Extends the Pythagorean theorem to non-right triangles. When C = 90°, 
+the term 2ab·cos(C) vanishes, yielding the Pythagorean theorem.</p>
+<p><strong>Applications:</strong></p>
+<ul>
+<li>Solving SAS or SSS triangle configurations</li>
+<li>Navigation and surveying calculations</li>
+<li>Vector dot product derivations</li>
+</ul>
+</div>
+</div>
+
+<div class="section">
+<h2>🌊 Inverse Trigonometric Functions</h2>
+
+<table>
+<tr>
+<th>Function</th>
+<th>Notation</th>
+<th>Domain</th>
+<th>Principal Range</th>
+<th>Key Property</th>
+</tr>
+<tr>
+<td>Arcsine</td>
+<td>arcsin(x), sin⁻¹(x)</td>
+<td>[-1, 1]</td>
+<td>[-π/2, π/2]</td>
+<td>sin(arcsin(x)) = x</td>
+</tr>
+<tr>
+<td>Arccosine</td>
+<td>arccos(x), cos⁻¹(x)</td>
+<td>[-1, 1]</td>
+<td>[0, π]</td>
+<td>cos(arccos(x)) = x</td>
+</tr>
+<tr>
+<td>Arctangent</td>
+<td>arctan(x), tan⁻¹(x)</td>
+<td>ℝ</td>
+<td>(-π/2, π/2)</td>
+<td>tan(arctan(x)) = x</td>
+</tr>
+</table>
+
+<div class="theory-box">
+<h4>Derivatives of Inverse Functions</h4>
+<div class="formula">
+d/dx[arcsin(x)] = 1/√(1-x²)<br>
+d/dx[arccos(x)] = -1/√(1-x²)<br>
+d/dx[arctan(x)] = 1/(1+x²)
+</div>
+<p><strong>Derivation Method:</strong> Use implicit differentiation on y = sin⁻¹(x) ⟹ x = sin(y), 
+yielding dx/dy = cos(y) = √(1-sin²(y)) = √(1-x²), hence dy/dx = 1/√(1-x²).</p>
+</div>
+</div>
+
+<div class="section">
+<h2>⚡ Applications</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Simple Harmonic Motion</h4>
+<p>Position of an oscillating mass on a spring:</p>
+<div class="formula">x(t) = A·cos(ωt + φ)</div>
+<p>Where A = amplitude, ω = angular frequency, φ = phase constant.</p>
+<p><strong>Physical Insight:</strong> The circular motion projection onto a diameter yields sinusoidal oscillation.</p>
+</div>
+
+<div class="component-card">
+<h4>Wave Interference</h4>
+<p>Superposition of two waves with same frequency:</p>
+<div class="formula">y = A₁sin(kx - ωt) + A₂sin(kx - ωt + δ)</div>
+<p>Using sum formulas, this simplifies to a single wave with modified amplitude depending on phase difference δ.</p>
+</div>
+
+<div class="component-card">
+<h4>Polar to Cartesian Conversion</h4>
+<div class="formula">
+x = r·cos(θ)<br>
+y = r·sin(θ)<br>
+r = √(x² + y²)<br>
+θ = arctan(y/x)
+</div>
+<p><strong>Engineering Use:</strong> Essential for complex number operations, AC circuit analysis, and signal processing.</p>
+</div>
+
+<div class="component-card">
+<h4>Fourier Series</h4>
+<p>Any periodic function f(x) with period 2π can be represented as:</p>
+<div class="formula">
+f(x) = a₀/2 + Σ[aₙcos(nx) + bₙsin(nx)]
+</div>
+<p><strong>Significance:</strong> Foundation of signal processing, allowing decomposition of complex waveforms into simple sinusoids.</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔬 Advanced Topics</h2>
+
+<div class="theory-box">
+<h4>Euler's Formula</h4>
+<div class="formula">e^(iθ) = cos(θ) + i·sin(θ)</div>
+<p>This profound identity connects exponential functions to trigonometry via complex analysis. 
+Special case (θ = π): e^(iπ) + 1 = 0, relating five fundamental constants.</p>
+<p><strong>Applications:</strong></p>
+<ul>
+<li>Simplifying oscillation problems in quantum mechanics</li>
+<li>AC circuit analysis using phasors</li>
+<li>Deriving trigonometric identities elegantly</li>
+</ul>
+</div>
+
+<div class="theory-box">
+<h4>Hyperbolic Functions</h4>
+<p>Analogous to circular functions but based on hyperbolas rather than circles:</p>
+<div class="formula">
+sinh(x) = (e^x - e^(-x))/2<br>
+cosh(x) = (e^x + e^(-x))/2<br>
+cosh²(x) - sinh²(x) = 1
+</div>
+<p><strong>Physical Context:</strong> Describe catenary curves (hanging chains), special relativity spacetime geometry, and certain heat conduction problems.</p>
+</div>
+</div>
+
+<div class="section">
+<h2>💡 Problem-Solving Strategies</h2>
+
+<div class="component-card">
+<h4>1. Simplify Using Identities</h4>
+<p><strong>Example:</strong> Prove (sin(x) + cos(x))² + (sin(x) - cos(x))² = 2</p>
+<p><em>Solution:</em> Expand both squares: sin²(x) + 2sin(x)cos(x) + cos²(x) + sin²(x) - 2sin(x)cos(x) + cos²(x) 
+= 2sin²(x) + 2cos²(x) = 2(sin²(x) + cos²(x)) = 2·1 = 2 ✓</p>
+</div>
+
+<div class="component-card">
+<h4>2. Substitution for Integrals</h4>
+<p><strong>Example:</strong> ∫ dx/√(1-x²)</p>
+<p><em>Solution:</em> Let x = sin(θ), dx = cos(θ)dθ. Then √(1-x²) = √(1-sin²(θ)) = cos(θ).</p>
+<p>Integral becomes: ∫ cos(θ)dθ/cos(θ) = ∫ dθ = θ + C = arcsin(x) + C</p>
+</div>
+
+<div class="component-card">
+<h4>3. Complex Exponential Method</h4>
+<p><strong>Example:</strong> Find cos(5θ) in terms of cos(θ)</p>
+<p><em>Solution:</em> Using e^(i5θ) = (e^(iθ))^5 and binomial expansion with Euler's formula yields:</p>
+<div class="formula">cos(5θ) = 16cos⁵(θ) - 20cos³(θ) + 5cos(θ)</div>
+</div>
+</div>

@@ -1,0 +1,261 @@
+---
+layout: MathNotes
+title: Differential Equations
+subtitle: Ordinary and Partial Differential Equations with Applications
+---
+
+<div class="section">
+<h2>📊 First-Order ODEs</h2>
+
+<div class="theory-box">
+<h4>Classification</h4>
+<p>A first-order ODE has form F(t, y, y') = 0. Order = highest derivative present.</p>
+<p><strong>Linear:</strong> a₁(t)y' + a₀(t)y = g(t)</p>
+<p><strong>Nonlinear:</strong> Contains y², yy', (y')², sin(y), etc.</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Separable Equations</h4>
+<p>Form: dy/dt = g(t)h(y)</p>
+<p><strong>Method:</strong> Separate and integrate</p>
+<div class="formula">∫dy/h(y) = ∫g(t)dt</div>
+<p><strong>Example:</strong> dy/dt = ty<br>
+dy/y = t dt → ln|y| = t²/2 + C → y = Ae^(t²/2)</p>
+</div>
+
+<div class="component-card">
+<h4>Linear First-Order</h4>
+<p>Standard form: y' + p(t)y = g(t)</p>
+<p><strong>Integrating Factor:</strong> μ(t) = e^(∫p(t)dt)</p>
+<p>Multiply equation by μ(t):</p>
+<div class="formula">[μ(t)y]' = μ(t)g(t)</div>
+<p>Integrate both sides to solve</p>
+</div>
+
+<div class="component-card">
+<h4>Exact Equations</h4>
+<p>M(t,y)dt + N(t,y)dy = 0 is exact if:</p>
+<div class="formula">∂M/∂y = ∂N/∂t</div>
+<p>Solution: Find f where ∂f/∂t = M, ∂f/∂y = N<br>
+Then f(t,y) = C is implicit solution</p>
+</div>
+
+<div class="component-card">
+<h4>Bernoulli Equation</h4>
+<div class="formula">y' + p(t)y = q(t)y^n</div>
+<p><strong>Substitution:</strong> v = y^(1-n) reduces to linear equation</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🎯 Second-Order Linear ODEs</h2>
+
+<div class="theory-box">
+<h4>General Form</h4>
+<div class="formula">a₂(t)y'' + a₁(t)y' + a₀(t)y = g(t)</div>
+<p><strong>Homogeneous:</strong> g(t) = 0<br>
+<strong>Nonhomogeneous:</strong> g(t) ≠ 0</p>
+<p><strong>Superposition Principle:</strong> General solution = y_h + y_p (homogeneous + particular)</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Constant Coefficients (Homogeneous)</h4>
+<div class="formula">ay'' + by' + cy = 0</div>
+<p><strong>Characteristic Equation:</strong> ar² + br + c = 0</p>
+<ul>
+<li>Distinct real roots r₁, r₂: y = c₁e^(r₁t) + c₂e^(r₂t)</li>
+<li>Repeated root r: y = (c₁ + c₂t)e^(rt)</li>
+<li>Complex roots α±βi: y = e^(αt)[c₁cos(βt) + c₂sin(βt)]</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Method of Undetermined Coefficients</h4>
+<p>For g(t) = polynomial, exponential, sin/cos, or products:</p>
+<p><strong>Strategy:</strong> Guess form of y_p based on g(t), substitute, solve for coefficients</p>
+<p><strong>Modification Rule:</strong> If guess overlaps with y_h, multiply by t</p>
+</div>
+
+<div class="component-card">
+<h4>Variation of Parameters</h4>
+<p>For ay'' + by' + cy = g(t), find y_h = c₁y₁ + c₂y₂</p>
+<p>Particular solution:</p>
+<div class="formula">y_p = u₁(t)y₁ + u₂(t)y₂</div>
+<p>where u₁' = -y₂g/(aW), u₂' = y₁g/(aW)<br>
+W = Wronskian = y₁y₂' - y₁'y₂</p>
+</div>
+
+<div class="component-card">
+<h4>Cauchy-Euler Equation</h4>
+<div class="formula">at²y'' + bty' + cy = 0</div>
+<p><strong>Substitution:</strong> y = t^r leads to characteristic equation</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🌊 Laplace Transforms</h2>
+
+<div class="theory-box">
+<h4>Definition</h4>
+<div class="formula">ℒ{f(t)} = F(s) = ∫₀^∞ e^(-st)f(t)dt</div>
+<p>Converts differential equations to algebraic equations</p>
+</div>
+
+<table>
+<tr><th>f(t)</th><th>F(s) = ℒ{f(t)}</th></tr>
+<tr><td>1</td><td>1/s</td></tr>
+<tr><td>t^n</td><td>n!/s^(n+1)</td></tr>
+<tr><td>e^(at)</td><td>1/(s-a)</td></tr>
+<tr><td>sin(ωt)</td><td>ω/(s²+ω²)</td></tr>
+<tr><td>cos(ωt)</td><td>s/(s²+ω²)</td></tr>
+</table>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Properties</h4>
+<ul>
+<li>Linearity: ℒ{af + bg} = aF + bG</li>
+<li>First derivative: ℒ{f'} = sF(s) - f(0)</li>
+<li>Second derivative: ℒ{f''} = s²F(s) - sf(0) - f'(0)</li>
+<li>Shifting: ℒ{e^(at)f(t)} = F(s-a)</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Solving Initial Value Problems</h4>
+<ol>
+<li>Take Laplace transform of both sides</li>
+<li>Use initial conditions</li>
+<li>Solve algebraically for Y(s)</li>
+<li>Take inverse Laplace transform</li>
+</ol>
+</div>
+
+<div class="component-card">
+<h4>Convolution</h4>
+<div class="formula">(f*g)(t) = ∫₀^t f(τ)g(t-τ)dτ</div>
+<p><strong>Theorem:</strong> ℒ{f*g} = F(s)G(s)</p>
+<p>Useful for piecewise forcing functions</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>🔄 Systems of Differential Equations</h2>
+
+<div class="theory-box">
+<h4>Matrix Form</h4>
+<div class="formula">x' = Ax + f(t)</div>
+<p>where x is vector of unknowns, A is coefficient matrix</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Eigenvalue Method (Homogeneous)</h4>
+<p>For x' = Ax:</p>
+<ol>
+<li>Find eigenvalues λ and eigenvectors v of A</li>
+<li>Solutions: x(t) = e^(λt)v</li>
+<li>General solution is linear combination</li>
+</ol>
+<p><strong>Complex eigenvalues:</strong> Use Euler's formula to get real solutions</p>
+</div>
+
+<div class="component-card">
+<h4>Phase Plane Analysis</h4>
+<p>For 2D system x' = f(x,y), y' = g(x,y):</p>
+<ul>
+<li><strong>Equilibrium:</strong> Points where f = g = 0</li>
+<li><strong>Trajectories:</strong> Solution curves in xy-plane</li>
+<li><strong>Stability:</strong> Analyze eigenvalues at equilibria</li>
+</ul>
+</div>
+
+<div class="component-card">
+<h4>Stability Classification</h4>
+<ul>
+<li>Both eigenvalues negative: stable node</li>
+<li>Both eigenvalues positive: unstable node</li>
+<li>Opposite signs: saddle point (unstable)</li>
+<li>Complex with negative real part: stable spiral</li>
+<li>Pure imaginary: center (neutrally stable)</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>📐 Partial Differential Equations</h2>
+
+<div class="theory-box">
+<h4>Classical PDEs</h4>
+<p><strong>Heat Equation:</strong> ∂u/∂t = k∂²u/∂x² (diffusion)</p>
+<p><strong>Wave Equation:</strong> ∂²u/∂t² = c²∂²u/∂x² (vibrations)</p>
+<p><strong>Laplace's Equation:</strong> ∂²u/∂x² + ∂²u/∂y² = 0 (steady-state)</p>
+</div>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Separation of Variables</h4>
+<p>Assume u(x,t) = X(x)T(t), substitute into PDE:</p>
+<p>Separate into ODEs for X and T<br>
+Solve each ODE with boundary/initial conditions<br>
+Sum solutions (superposition principle)</p>
+</div>
+
+<div class="component-card">
+<h4>Fourier Series Solution</h4>
+<p>Heat equation on [0,L] with u(0,t) = u(L,t) = 0:</p>
+<div class="formula">u(x,t) = Σ bₙe^(-n²π²kt/L²)sin(nπx/L)</div>
+<p>Coefficients bₙ from initial condition via Fourier series</p>
+</div>
+
+<div class="component-card">
+<h4>D'Alembert's Solution</h4>
+<p>Wave equation on infinite domain:</p>
+<div class="formula">u(x,t) = ½[f(x-ct) + f(x+ct)] + 1/(2c)∫_{x-ct}^{x+ct} g(s)ds</div>
+<p>where f = initial position, g = initial velocity</p>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>⚡ Applications</h2>
+
+<div class="component-grid">
+<div class="component-card">
+<h4>Population Dynamics</h4>
+<p><strong>Exponential:</strong> dP/dt = kP<br>
+<strong>Logistic:</strong> dP/dt = kP(1 - P/M) where M = carrying capacity<br>
+<strong>Predator-Prey (Lotka-Volterra):</strong><br>
+dx/dt = αx - βxy<br>
+dy/dt = δxy - γy</p>
+</div>
+
+<div class="component-card">
+<h4>Mechanical Vibrations</h4>
+<p>Spring-mass-damper system:</p>
+<div class="formula">my'' + cy' + ky = F(t)</div>
+<p>m = mass, c = damping, k = spring constant, F = forcing</p>
+<p><strong>Resonance:</strong> Occurs when forcing frequency matches natural frequency</p>
+</div>
+
+<div class="component-card">
+<h4>Electrical Circuits</h4>
+<p>RLC circuit (Kirchhoff's law):</p>
+<div class="formula">LI'' + RI' + I/C = E'(t)</div>
+<p>Analogous to mechanical vibrations</p>
+</div>
+
+<div class="component-card">
+<h4>Heat Conduction</h4>
+<p>Temperature in rod:</p>
+<div class="formula">∂u/∂t = k∂²u/∂x²</div>
+<p>Solutions show exponential decay to equilibrium</p>
+</div>
+</div>
+</div>
