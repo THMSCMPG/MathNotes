@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 2.2 - Separation of Variables</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #d4a574;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #ffd89b;
+            --blue-ink: #1e4d7b;
+            --red-ink: #a0522d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f9f5ef 0%, #e8dcc7 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(212, 165, 116, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--red-ink) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 216, 155, 0.1);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: white;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+        
+        .step-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .formula-box {
+            background: #f0f8ff;
+            border: 2px dashed var(--blue-ink);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        
+        .hint-box {
+            background: #fff9e6;
+            border-left: 5px solid #ffd700;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .hint-box::before {
+            content: '💡 Hint: ';
+            font-weight: 700;
+            color: #b8860b;
+        }
+        
+        .warning-box {
+            background: #ffebee;
+            border-left: 5px solid #c62828;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning-box::before {
+            content: '⚠️ Common Mistake: ';
+            font-weight: 700;
+            color: #c62828;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.08) 0%, rgba(212, 165, 116, 0.12) 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid var(--accent);
+        }
+        
+        .key-concept h4 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .container { padding: 1.5rem; }
+            h1 { font-size: 2.5rem; }
+            .approach-tabs { flex-direction: column; }
+            .tab-button { border-radius: 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Section 2.2</h1>
+            <div class="subtitle">Separable Variables – Solution Strategies</div>
+        </div>
+        
+        <div class="intro">
+            <strong>Separation of Variables</strong> is a fundamental technique for solving first-order differential equations. The method works when you can write the equation in the form \(g(y)dy = h(x)dx\), allowing you to integrate each side independently. This guide presents multiple solution approaches for each problem to help you develop flexibility and deeper understanding.
+        </div>
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Basic Quadratic Separation</h2>
+            
+            <div class="question-text">
+                Solve the differential equation by separation of variables:
+                $$dy - (y - 7)^2 dx = 0$$
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">Direct Separation</button>
+                <button class="tab-button" onclick="showApproach('q1', 2)">Substitution u = y - 7</button>
+                <button class="tab-button" onclick="showApproach('q1', 3)">With Verification</button>
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Direct Separation</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Separate Variables</div>
+                    <div class="formula-box">
+                        $$dy = (y-7)^2 dx$$
+                        $$\frac{dy}{(y-7)^2} = dx$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Integrate Both Sides</div>
+                    <div class="formula-box">
+                        $$\int (y-7)^{-2} dy = \int dx$$
+                        $$\frac{(y-7)^{-1}}{-1} = x + C$$
+                        $$-\frac{1}{y-7} = x + C$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Solve for y</div>
+                    <div class="formula-box">
+                        $$y - 7 = -\frac{1}{x+C}$$
+                        $$\boxed{y = 7 - \frac{1}{x+C}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Substitution Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Make Substitution</div>
+                    <p>Let \(u = y - 7\), then \(du = dy\)</p>
+                    <div class="formula-box">
+                        $$du = u^2 dx$$
+                        $$u^{-2} du = dx$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Integrate</div>
+                    <div class="formula-box">
+                        $$\int u^{-2} du = \int dx$$
+                        $$-u^{-1} = x + C$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Back-Substitute</div>
+                    <div class="formula-box">
+                        $$-\frac{1}{y-7} = x + C$$
+                        $$\boxed{y = 7 - \frac{1}{x+C}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q1-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: With Verification</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Solve</div>
+                    <div class="formula-box">
+                        $$\int \frac{dy}{(y-7)^2} = \int dx$$
+                        $$-\frac{1}{y-7} = x + C$$
+                        $$y = 7 - \frac{1}{x+C}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Verify</div>
+                    <p>Differentiate: \(y = 7 - (x+C)^{-1}\)</p>
+                    <div class="formula-box">
+                        $$\frac{dy}{dx} = 0 - (-1)(x+C)^{-2} = \frac{1}{(x+C)^2}$$
+                    </div>
+                    <p>Check: \((y-7)^2 = \left(-\frac{1}{x+C}\right)^2 = \frac{1}{(x+C)^2}\) ✓</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Exponential Equation</h2>
+            
+            <div class="question-text">
+                Solve: $$e^{xy} \frac{dy}{dx} = e^{-y} + e^{-6x - y}$$
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Factor & Separate</button>
+                <button class="tab-button" onclick="showApproach('q2', 2)">Exponential Laws</button>
+                <button class="tab-button" onclick="showApproach('q2', 3)">Analysis</button>
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Factor and Separate</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Factor Right Side</div>
+                    <div class="formula-box">
+                        $$e^{xy} \frac{dy}{dx} = e^{-y}(1 + e^{-6x})$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Separate Variables</div>
+                    <div class="formula-box">
+                        $$\frac{e^{xy}}{e^{-y}} dy = (1 + e^{-6x}) dx$$
+                        $$e^{xy+y} dy = (1 + e^{-6x}) dx$$
+                        $$e^{y(x+1)} dy = (1 + e^{-6x}) dx$$
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    The left side contains both x and y, making traditional separation impossible. This equation may require an implicit solution or numerical methods.
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Using Exponential Properties</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Rewrite</div>
+                    <div class="formula-box">
+                        $$\frac{dy}{dx} = \frac{e^{-y} + e^{-6x-y}}{e^{xy}}$$
+                        $$\frac{dy}{dx} = e^{-y-xy} + e^{-6x-y-xy}$$
+                        $$\frac{dy}{dx} = e^{-y(1+x)}(1 + e^{-6x})$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Attempt Separation</div>
+                    <div class="formula-box">
+                        $$e^{y(1+x)} dy = (1 + e^{-6x}) dx$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Integrate Right Side</div>
+                    <div class="formula-box">
+                        $$\int (1 + e^{-6x}) dx = x - \frac{1}{6}e^{-6x} + C$$
+                    </div>
+                    <p>Left side cannot be integrated in elementary form.</p>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q2-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Recognition</h3>
+                
+                <div class="key-concept">
+                    <h4>Important Note</h4>
+                    When \(e^{xy}\) appears, the equation is generally not separable unless there's a special cancellation.
+                </div>
+                
+                <div class="hint-box">
+                    This problem may have a typo or require implicit solution. Verify the problem statement or consult your textbook's answer key.
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Rational Function</h2>
+            
+            <div class="question-text">
+                Solve: $$\frac{dy}{dx} = \frac{2y + 7}{8x + 9}$$
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">Logarithmic Integration</button>
+                <button class="tab-button" onclick="showApproach('q3', 2)">Power Form</button>
+                <button class="tab-button" onclick="showApproach('q3', 3)">Complete Solution</button>
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Logarithmic Integration</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Separate</div>
+                    <div class="formula-box">
+                        $$\frac{dy}{2y+7} = \frac{dx}{8x+9}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Integrate Using \(\int \frac{1}{ax+b}dx = \frac{1}{a}\ln|ax+b|\)</div>
+                    <div class="formula-box">
+                        $$\frac{1}{2}\ln|2y+7| = \frac{1}{8}\ln|8x+9| + C$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Solve for y</div>
+                    <div class="formula-box">
+                        $$\ln|2y+7| = \frac{1}{4}\ln|8x+9| + K$$
+                        $$|2y+7| = e^K |8x+9|^{1/4}$$
+                        $$2y+7 = A(8x+9)^{1/4}$$
+                        $$\boxed{y = \frac{A(8x+9)^{1/4} - 7}{2}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q3-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Using Power Form</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">After Integration</div>
+                    <div class="formula-box">
+                        $$\frac{1}{2}\ln|2y+7| = \frac{1}{8}\ln|8x+9| + C$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Multiply by 2</div>
+                    <div class="formula-box">
+                        $$\ln|2y+7| = \frac{1}{4}\ln|8x+9| + 2C$$
+                        $$\ln|2y+7| = \ln|8x+9|^{1/4} + K$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Exponentiate</div>
+                    <div class="formula-box">
+                        $$|2y+7| = e^K (8x+9)^{1/4}$$
+                        $$\boxed{y = \frac{A\sqrt[4]{8x+9} - 7}{2}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q3-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Complete with Verification</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Full Solution</div>
+                    <div class="formula-box">
+                        $$\int \frac{dy}{2y+7} = \int \frac{dx}{8x+9}$$
+                        $$\frac{1}{2}\ln|2y+7| = \frac{1}{8}\ln|8x+9| + C$$
+                        $$y = \frac{A(8x+9)^{1/4} - 7}{2}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Verify</div>
+                    <p>Differentiate \(y\):</p>
+                    <div class="formula-box">
+                        $$\frac{dy}{dx} = \frac{A}{2} \cdot \frac{1}{4}(8x+9)^{-3/4} \cdot 8 = \frac{A}{(8x+9)^{3/4}}$$
+                    </div>
+                    <p>Check RHS:</p>
+                    <div class="formula-box">
+                        $$\frac{2y+7}{8x+9} = \frac{A(8x+9)^{1/4}}{8x+9} = \frac{A}{(8x+9)^{3/4}}$$ 
+                    </div>
+                    <p>Match! ✓</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 4 -->
+        <div class="question-card" id="q4">
+            <span class="question-number">4</span>
+            <h2 class="question-title">Logistic Equation with Partial Fractions</h2>
+            
+            <div class="question-text">
+                $$\frac{dP}{dt} = P - P^2$$
+                Find: (a) \(\int \frac{dP}{g(P)}\) and \(\int h(t)dt\), then (b) solve the equation.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q4', 1)">Partial Fractions</button>
+                <button class="tab-button" onclick="showApproach('q4', 2)">Logistic Form</button>
+                <button class="tab-button" onclick="showApproach('q4', 3)">Complete Solution</button>
+            </div>
+            
+            <div class="approach-content active" id="q4-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Partial Fractions</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Identify Functions</div>
+                    <div class="formula-box">
+                        $$g(P) = P - P^2 = P(1-P)$$
+                        $$h(t) = 1$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Partial Fractions</div>
+                    <div class="formula-box">
+                        $$\frac{1}{P(1-P)} = \frac{A}{P} + \frac{B}{1-P}$$
+                    </div>
+                    <p>Solving: \(A = 1, B = 1\)</p>
+                    <div class="formula-box">
+                        $$\int \frac{dP}{P(1-P)} = \int \left(\frac{1}{P} + \frac{1}{1-P}\right) dP$$
+                        $$= \ln|P| - \ln|1-P| + C = \boxed{\ln\left|\frac{P}{1-P}\right| + C}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Other Integral</div>
+                    <div class="formula-box">
+                        $$\int h(t)dt = \boxed{t + C}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve</div>
+                    <div class="formula-box">
+                        $$\ln\left|\frac{P}{1-P}\right| = t + C$$
+                        $$\frac{P}{1-P} = Ae^t$$
+                        $$\boxed{P = \frac{Ae^t}{1 + Ae^t}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q4-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Logistic Form</h3>
+                
+                <div class="key-concept">
+                    <h4>Logistic Equation</h4>
+                    \(\frac{dP}{dt} = P(1-P)\) is the standard logistic growth equation.
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Standard Form</div>
+                    <p>This is logistic growth with \(r = 1\) and \(K = 1\).</p>
+                    <p>General solution:</p>
+                    <div class="formula-box">
+                        $$P(t) = \frac{KP_0 e^{rt}}{K + P_0(e^{rt} - 1)} = \frac{P_0 e^t}{1 + P_0(e^t - 1)}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Simplify</div>
+                    <div class="formula-box">
+                        $$\boxed{P = \frac{Ce^t}{1 + Ce^t}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q4-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Complete Derivation</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Separate and Integrate</div>
+                    <div class="formula-box">
+                        $$\frac{dP}{P(1-P)} = dt$$
+                        $$\int \left(\frac{1}{P} + \frac{1}{1-P}\right)dP = \int dt$$
+                        $$\ln|P| - \ln|1-P| = t + C$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Exponentiate</div>
+                    <div class="formula-box">
+                        $$\ln\left|\frac{P}{1-P}\right| = t + C$$
+                        $$\frac{P}{1-P} = Ke^t$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Solve for P</div>
+                    <div class="formula-box">
+                        $$P = Ke^t(1-P)$$
+                        $$P = Ke^t - PKe^t$$
+                        $$P(1 + Ke^t) = Ke^t$$
+                        $$\boxed{P = \frac{Ke^t}{1 + Ke^t} = \frac{1}{1 + K^{-1}e^{-t}}}$$
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Master Strategy:</strong> For separation of variables: (1) Rearrange to get all y-terms with dy and all x-terms with dx, (2) Integrate both sides, (3) Solve for y explicitly if possible, (4) Always verify by differentiation. Practice recognizing when to use partial fractions, substitution, or logarithmic integration!
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 4.3 - Homogeneous Linear Equations</title>
+    
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #d4a574;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #ffd89b;
+            --blue-ink: #1e4d7b;
+            --red-ink: #a0522d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f9f5ef 0%, #e8dcc7 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative paper texture */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(212, 165, 116, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .intro strong {
+            color: var(--secondary);
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--red-ink) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 216, 155, 0.1);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+            position: relative;
+            padding-left: 4rem;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, var(--blue-ink) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .step p {
+            margin: 0.5rem 0;
+            line-height: 1.7;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.05) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .hint-box {
+            background: linear-gradient(135deg, rgba(255, 216, 155, 0.2) 0%, rgba(212, 165, 116, 0.1) 100%);
+            border-left: 4px solid var(--highlight);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-concept h4 {
+            color: var(--blue-ink);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(160, 82, 45, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border-left: 4px solid var(--red-ink);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            color: var(--red-ink);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Section 4.3</h1>
+            <div class="subtitle">Constant Coefficients and Characteristic Equations</div>
+        </div>
+        
+        <div class="intro">
+            This section covers the most important method for solving <strong>homogeneous linear DEs with constant coefficients</strong>: the <strong>characteristic equation method</strong>. We learn to handle all three cases: <strong>distinct real roots, repeated roots, and complex roots</strong>.
+        </div>
+        
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Distinct Real Roots</h2>
+            
+            <div class="question-text">
+                Solve y'' - 5y' + 6y = 0
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">Characteristic Equation Method</button>
+<button class="tab-button" onclick="showApproach('q1', 2)">Initial Value Problem</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Characteristic Equation Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Assume Exponential Solution</div>
+                    <p>Try y = e^(rx)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Form Characteristic Equation</div>
+                    <p>Substitute into DE</p>
+                    <div class="formula-box">
+                        $$r^2e^{rx} - 5re^{rx} + 6e^{rx} = 0$$
+$$r^2 - 5r + 6 = 0$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Solve for r</div>
+                    <p>Factor or use quadratic formula</p>
+                    <div class="formula-box">
+                        $$(r-2)(r-3) = 0 \implies r_1 = 2, r_2 = 3$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Write General Solution</div>
+                    <p>Linear combination of solutions</p>
+                    <div class="formula-box">
+                        $$y = c_1e^{2x} + c_2e^{3x}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Verify Linear Independence</div>
+                    <p>W(e^(2x), e^(3x)) = e^(5x) ≠ 0</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Initial Value Problem</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Start with General Solution</div>
+                    <p>y = c₁e^(2x) + c₂e^(3x)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Apply y(0) = 1</div>
+                    <p>c₁ + c₂ = 1</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Compute y'</div>
+                    <p>y' = 2c₁e^(2x) + 3c₂e^(3x)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Apply y'(0) = 0</div>
+                    <p>2c₁ + 3c₂ = 0</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Solve System</div>
+                    <p>c₁ = 3, c₂ = -2</p>
+                    <div class="formula-box">
+                        $$y = 3e^{2x} - 2e^{3x}$$
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Repeated Roots</h2>
+            
+            <div class="question-text">
+                Solve y'' - 6y' + 9y = 0
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Repeated Root Formula</button>
+<button class="tab-button" onclick="showApproach('q2', 2)">Higher Multiplicity</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Repeated Root Formula</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Characteristic Equation</div>
+                    <p>r² - 6r + 9 = 0</p>
+                    <div class="formula-box">
+                        $$(r-3)^2 = 0 \implies r = 3 \text{ (multiplicity 2)}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">First Solution</div>
+                    <p>Standard exponential</p>
+                    <div class="formula-box">
+                        $$y_1 = e^{3x}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Second Solution</div>
+                    <p>Multiply by x for repeated root</p>
+                    <div class="formula-box">
+                        $$y_2 = xe^{3x}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">General Solution</div>
+                    <p>Combine solutions</p>
+                    <div class="formula-box">
+                        $$y = c_1e^{3x} + c_2xe^{3x} = e^{3x}(c_1 + c_2x)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Why This Works</div>
+                    <p>Reduction of order would give same result</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Higher Multiplicity</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">General Rule</div>
+                    <p>For root r with multiplicity k</p>
+                    <div class="formula-box">
+                        $$e^{rx}, xe^{rx}, x^2e^{rx}, \ldots, x^{k-1}e^{rx}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Example: Triple Root</div>
+                    <p>If (r-2)³ = 0</p>
+                    <div class="formula-box">
+                        $$y = e^{2x}(c_1 + c_2x + c_3x^2)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Verify Independence</div>
+                    <p>These are always linearly independent</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Complex Roots</h2>
+            
+            <div class="question-text">
+                Solve y'' + 4y' + 13y = 0
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">Euler's Formula Approach</button>
+<button class="tab-button" onclick="showApproach('q3', 2)">Complex Exponentials</button>
+<button class="tab-button" onclick="showApproach('q3', 3)">Oscillatory Behavior</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Euler's Formula Approach</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Characteristic Equation</div>
+                    <p>r² + 4r + 13 = 0</p>
+                    <div class="formula-box">
+                        $$r = \frac{-4 \pm \sqrt{16-52}}{2} = \frac{-4 \pm 6i}{2} = -2 \pm 3i$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Identify α and β</div>
+                    <p>Complex roots: r = α ± βi</p>
+                    <div class="formula-box">
+                        $$\alpha = -2, \quad \beta = 3$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Real-Valued Solutions</div>
+                    <p>Use Euler's formula e^(ix) = cos(x) + i sin(x)</p>
+                    <div class="formula-box">
+                        $$y_1 = e^{\alpha x}\cos(\beta x) = e^{-2x}\cos(3x)$$
+$$y_2 = e^{\alpha x}\sin(\beta x) = e^{-2x}\sin(3x)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">General Solution</div>
+                    <p>Linear combination</p>
+                    <div class="formula-box">
+                        $$y = e^{-2x}(c_1\cos(3x) + c_2\sin(3x))$$
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q3-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Complex Exponentials</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Complex Solutions</div>
+                    <p>y = e^((-2+3i)x) and y = e^((-2-3i)x)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Apply Euler's Formula</div>
+                    <p>e^((α+iβ)x) = e^(αx)(cos(βx) + i sin(βx))</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Take Real and Imaginary Parts</div>
+                    <p>Both are real solutions</p>
+                    <div class="formula-box">
+                        $$\text{Real part: } e^{-2x}\cos(3x)$$
+$$\text{Imaginary part: } e^{-2x}\sin(3x)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Why This Works</div>
+                    <p>Superposition principle for linear DEs</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q3-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Oscillatory Behavior</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Analyze Solution Structure</div>
+                    <p>e^(αx)[c₁cos(βx) + c₂sin(βx)]</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Envelope</div>
+                    <p>e^(-2x) causes exponential decay</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Oscillation</div>
+                    <p>cos(3x) and sin(3x) cause oscillation</p>
+                    <div class="formula-box">
+                        $$\text{Period} = \frac{2\pi}{\beta} = \frac{2\pi}{3}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Behavior</div>
+                    <p>Damped oscillations approaching 0 as x → ∞</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card" id="q4">
+            <span class="question-number">4</span>
+            <h2 class="question-title">Higher-Order Equations</h2>
+            
+            <div class="question-text">
+                Solve y^(4) - 5y'' + 4y = 0
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q4', 1)">Fourth-Order Characteristic</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q4-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Fourth-Order Characteristic</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Characteristic Equation</div>
+                    <p>r⁴ - 5r² + 4 = 0</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Factor as Quadratic in r²</div>
+                    <p>Let u = r²</p>
+                    <div class="formula-box">
+                        $$(u-1)(u-4) = 0 \implies u = 1, 4$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Solve for r</div>
+                    <p>r² = 1 or r² = 4</p>
+                    <div class="formula-box">
+                        $$r = \pm 1, \pm 2$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">General Solution</div>
+                    <p>Four distinct real roots</p>
+                    <div class="formula-box">
+                        $$y = c_1e^x + c_2e^{-x} + c_3e^{2x} + c_4e^{-2x}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Alternative Form</div>
+                    <p>Using hyperbolic functions</p>
+                    <div class="formula-box">
+                        $$y = A\cosh(x) + B\sinh(x) + C\cosh(2x) + D\sinh(2x)$$
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Summary:</strong> Each problem can be approached from multiple angles. Understanding different methods helps develop deeper mathematical intuition and provides flexibility for solving similar problems in the future. <em>Practice switching between these perspectives to strengthen your problem-solving skills!</em>
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            // Hide all approaches for this question
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected approach
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            // Re-render MathJax for the newly shown content
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // Initial MathJax rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>

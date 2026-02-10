@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 3.1 - Linear Models</title>
+    
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #d4a574;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #ffd89b;
+            --blue-ink: #1e4d7b;
+            --red-ink: #a0522d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f9f5ef 0%, #e8dcc7 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative paper texture */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(212, 165, 116, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .intro strong {
+            color: var(--secondary);
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--red-ink) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 216, 155, 0.1);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+            position: relative;
+            padding-left: 4rem;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, var(--blue-ink) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .step p {
+            margin: 0.5rem 0;
+            line-height: 1.7;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.05) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .hint-box {
+            background: linear-gradient(135deg, rgba(255, 216, 155, 0.2) 0%, rgba(212, 165, 116, 0.1) 100%);
+            border-left: 4px solid var(--highlight);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-concept h4 {
+            color: var(--blue-ink);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(160, 82, 45, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border-left: 4px solid var(--red-ink);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            color: var(--red-ink);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Section 3.1</h1>
+            <div class="subtitle">Applications of First-Order Linear DEs</div>
+        </div>
+        
+        <div class="intro">
+            This section explores <strong>first-order linear differential equations</strong> of the form $$\frac{dy}{dx} + P(x)y = f(x)$$ and their applications to <strong>growth/decay problems, mixing problems, temperature problems</strong>, and other real-world scenarios.
+        </div>
+        
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Exponential Growth and Decay</h2>
+            
+            <div class="question-text">
+                A radioactive substance decays at a rate proportional to the amount present. If 100g reduces to 80g in 10 years, find the amount after 30 years.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">Direct DE Setup</button>
+<button class="tab-button" onclick="showApproach('q1', 2)">Half-Life Approach</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Direct DE Setup</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Set Up the Model</div>
+                    <p>Rate proportional to amount</p>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = -kA$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Solve the DE</div>
+                    <p>This is separable</p>
+                    <div class="formula-box">
+                        $$A(t) = A_0 e^{-kt}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Find k Using Data</div>
+                    <p>Use A(10) = 80 when A₀ = 100</p>
+                    <div class="formula-box">
+                        $$80 = 100e^{-10k} \implies k = -\frac{1}{10}\ln(0.8) \approx 0.0223$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Calculate A(30)</div>
+                    <p>Substitute t = 30</p>
+                    <div class="formula-box">
+                        $$A(30) = 100e^{-30k} = 100(0.8)^3 = 51.2 \text{ grams}$$
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Half-Life Approach</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Find Half-Life</div>
+                    <p>Time for half to decay</p>
+                    <div class="formula-box">
+                        $$t_{1/2} = \frac{\ln 2}{k}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Calculate from Given Data</div>
+                    <p>From 100g to 80g in 10 years</p>
+                    <div class="formula-box">
+                        $$k = \frac{1}{10}\ln\left(\frac{100}{80}\right)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Use Decay Formula</div>
+                    <p>Apply exponential formula</p>
+                    <div class="formula-box">
+                        $$A(t) = A_0\left(\frac{1}{2}\right)^{t/t_{1/2}}$$
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Mixing Problems</h2>
+            
+            <div class="question-text">
+                A tank contains 100 gallons of brine (salt water) with 50 lbs of salt. Pure water enters at 5 gal/min, and mixture leaves at 5 gal/min. Find the amount of salt after 20 minutes.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Rate In - Rate Out Method</button>
+<button class="tab-button" onclick="showApproach('q2', 2)">Concentration Method</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Rate In - Rate Out Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Define Variables</div>
+                    <p>Let A(t) = pounds of salt at time t</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Set Up Rate Equation</div>
+                    <p>Rate of change = Rate In - Rate Out</p>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = R_{in} - R_{out}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Calculate Rates</div>
+                    <p>Rate in = 0 (pure water)\nRate out = (5 gal/min)·(A/100 lbs/gal)</p>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = 0 - \frac{5A}{100} = -\frac{A}{20}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve the DE</div>
+                    <p>Separable equation</p>
+                    <div class="formula-box">
+                        $$A(t) = 50e^{-t/20}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Find A(20)</div>
+                    <p>Substitute t = 20</p>
+                    <div class="formula-box">
+                        $$A(20) = 50e^{-1} \approx 18.39 \text{ lbs}$$
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Concentration Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Track Concentration</div>
+                    <p>Concentration = Amount/Volume</p>
+                    <div class="formula-box">
+                        $$C(t) = \frac{A(t)}{V(t)}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Note Constant Volume</div>
+                    <p>Volume stays at 100 gallons</p>
+                    <div class="formula-box">
+                        $$C(t) = \frac{A(t)}{100}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Set Up DE for C</div>
+                    <p>Derive equation for concentration</p>
+                    <div class="formula-box">
+                        $$\frac{dC}{dt} = -\frac{C}{20}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve and Convert</div>
+                    <p>Find C(t), then A(t) = 100C(t)</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Newton's Law of Cooling</h2>
+            
+            <div class="question-text">
+                A cup of coffee at 90°C is placed in a room at 20°C. After 5 minutes, the temperature is 70°C. When will it reach 40°C?
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">Standard Newton's Law</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Standard Newton's Law</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">State Newton's Law</div>
+                    <p>Rate proportional to temperature difference</p>
+                    <div class="formula-box">
+                        $$\frac{dT}{dt} = -k(T - T_s)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Identify Parameters</div>
+                    <p>T_s = 20°C (surrounding)\nT(0) = 90°C\nT(5) = 70°C</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Solve the DE</div>
+                    <p>This gives</p>
+                    <div class="formula-box">
+                        $$T(t) = T_s + (T_0 - T_s)e^{-kt} = 20 + 70e^{-kt}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Find k</div>
+                    <p>Use T(5) = 70</p>
+                    <div class="formula-box">
+                        $$70 = 20 + 70e^{-5k} \implies k = -\frac{1}{5}\ln\left(\frac{50}{70}\right)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Find Time for T = 40</div>
+                    <p>Solve for t</p>
+                    <div class="formula-box">
+                        $$40 = 20 + 70e^{-kt} \implies t \approx 13.86 \text{ minutes}$$
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Summary:</strong> Each problem can be approached from multiple angles. Understanding different methods helps develop deeper mathematical intuition and provides flexibility for solving similar problems in the future. <em>Practice switching between these perspectives to strengthen your problem-solving skills!</em>
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            // Hide all approaches for this question
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected approach
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            // Re-render MathJax for the newly shown content
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // Initial MathJax rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>

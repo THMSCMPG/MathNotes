@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 2.3 - Linear Equations</title>
+    
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #1a472a;
+            --secondary: #2d5f3f;
+            --accent: #8fbc8f;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #e0f2e0;
+            --blue-ink: #1e4d7b;
+            --red-ink: #8b3a3a;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(26, 71, 42, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(143, 188, 143, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(45, 95, 63, 0.05) 0%, rgba(143, 188, 143, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--secondary) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(143, 188, 143, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(143, 188, 143, 0.08);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(143, 188, 143, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: white;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            width: 32px; height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+        
+        .step-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .formula-box {
+            background: #f0f8ff;
+            border: 2px dashed var(--blue-ink);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            overflow-x: auto;
+        }
+        
+        .hint-box {
+            background: #fffef0;
+            border-left: 5px solid #8fbc8f;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .hint-box::before {
+            content: '💡 Hint: ';
+            font-weight: 700;
+            color: #2d5f3f;
+        }
+        
+        .warning-box {
+            background: #fff3e0;
+            border-left: 5px solid #ff6f00;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning-box::before {
+            content: '⚠️ Watch Out: ';
+            font-weight: 700;
+            color: #e65100;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(45, 95, 63, 0.08) 0%, rgba(143, 188, 143, 0.12) 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid var(--accent);
+        }
+        
+        .key-concept h4 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 1rem; }
+            .container { padding: 1.5rem; }
+            h1 { font-size: 2.5rem; }
+            .approach-tabs { flex-direction: column; }
+            .tab-button { border-radius: 6px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Section 2.3</h1>
+            <div class="subtitle">Linear First-Order Equations – Solution Strategies</div>
+        </div>
+        
+        <div class="intro">
+            <strong>Linear First-Order Differential Equations</strong> have the standard form \(\frac{dy}{dx} + P(x)y = f(x)\). The solution method uses an <strong>integrating factor</strong> \(\mu(x) = e^{\int P(x)dx}\) which transforms the equation into an exact differential. This technique is one of the most important in differential equations!
+        </div>
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Basic Linear Equation</h2>
+            
+            <div class="question-text">
+                Find the general solution:
+                $$5\frac{dy}{dx} + 30y = 6$$
+                Also find the largest interval I and identify any transient terms.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">Standard Form Method</button>
+                <button class="tab-button" onclick="showApproach('q1', 2)">Integrating Factor</button>
+                <button class="tab-button" onclick="showApproach('q1', 3)">Complete Solution</button>
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Standard Form Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Write in Standard Form</div>
+                    <div class="formula-box">
+                        $$5\frac{dy}{dx} + 30y = 6$$
+                        $$\frac{dy}{dx} + 6y = \frac{6}{5}$$
+                    </div>
+                    <p>So \(P(x) = 6\) and \(f(x) = \frac{6}{5}\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Find Integrating Factor</div>
+                    <div class="formula-box">
+                        $$\mu(x) = e^{\int 6 dx} = e^{6x}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Multiply and Integrate</div>
+                    <div class="formula-box">
+                        $$e^{6x}\frac{dy}{dx} + 6e^{6x}y = \frac{6}{5}e^{6x}$$
+                        $$\frac{d}{dx}[e^{6x}y] = \frac{6}{5}e^{6x}$$
+                        $$e^{6x}y = \int \frac{6}{5}e^{6x}dx = \frac{6}{5} \cdot \frac{e^{6x}}{6} + C = \frac{e^{6x}}{5} + C$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve for y</div>
+                    <div class="formula-box">
+                        $$y = e^{-6x}\left(\frac{e^{6x}}{5} + C\right)$$
+                        $$\boxed{y(x) = \frac{1}{5} + Ce^{-6x}}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Interval and Transient Terms</div>
+                    <p><strong>Interval:</strong> \((-\infty, \infty)\) (no singular points)</p>
+                    <p><strong>Transient term:</strong> \(Ce^{-6x}\) (decays to 0 as \(x \to \infty\))</p>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Direct Integration</h3>
+                
+                <div class="key-concept">
+                    <h4>Integrating Factor Method</h4>
+                    For \(\frac{dy}{dx} + P(x)y = f(x)\), multiply by \(\mu = e^{\int P dx}\)
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Standard Form</div>
+                    <div class="formula-box">
+                        $$\frac{dy}{dx} + 6y = \frac{6}{5}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Apply \(\mu = e^{6x}\)</div>
+                    <div class="formula-box">
+                        $$\frac{d}{dx}[e^{6x}y] = \frac{6}{5}e^{6x}$$
+                        $$e^{6x}y = \frac{1}{5}e^{6x} + C$$
+                        $$\boxed{y = \frac{1}{5} + Ce^{-6x}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q1-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Complete Analysis</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Solution</div>
+                    <div class="formula-box">
+                        $$y(x) = \frac{1}{5} + Ce^{-6x}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Verify</div>
+                    <p>Differentiate:</p>
+                    <div class="formula-box">
+                        $$\frac{dy}{dx} = -6Ce^{-6x}$$
+                    </div>
+                    <p>Check:</p>
+                    <div class="formula-box">
+                        $$5(-6Ce^{-6x}) + 30\left(\frac{1}{5} + Ce^{-6x}\right)$$
+                        $$= -30Ce^{-6x} + 6 + 30Ce^{-6x} = 6$$ ✓
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Analysis</div>
+                    <p><strong>Interval:</strong> \((-\infty, \infty)\)</p>
+                    <p><strong>Transient:</strong> \(Ce^{-6x}\) → 0 as \(x \to \infty\)</p>
+                    <p><strong>Steady state:</strong> \(y = \frac{1}{5}\)</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Polynomial Right Side</h2>
+            
+            <div class="question-text">
+                Find the general solution:
+                $$y' = 2y + x^2 + 7$$
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Integrating Factor</button>
+                <button class="tab-button" onclick="showApproach('q2', 2)">Step by Step</button>
+                <button class="tab-button" onclick="showApproach('q2', 3)">Complete Solution</button>
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Integrating Factor Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Standard Form</div>
+                    <div class="formula-box">
+                        $$y' - 2y = x^2 + 7$$
+                    </div>
+                    <p>So \(P(x) = -2\) and \(f(x) = x^2 + 7\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Find \(\mu(x)\)</div>
+                    <div class="formula-box">
+                        $$\mu(x) = e^{\int -2 dx} = e^{-2x}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Multiply and Integrate</div>
+                    <div class="formula-box">
+                        $$\frac{d}{dx}[e^{-2x}y] = e^{-2x}(x^2 + 7)$$
+                        $$e^{-2x}y = \int e^{-2x}(x^2 + 7)dx$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Use Integration by Parts</div>
+                    <p>For \(\int e^{-2x}x^2 dx\), use tabular integration:</p>
+                    <div class="formula-box">
+                        $$\int e^{-2x}x^2 dx = -\frac{1}{2}e^{-2x}x^2 - \frac{1}{2}e^{-2x}x - \frac{1}{4}e^{-2x}$$
+                    </div>
+                    <p>And:</p>
+                    <div class="formula-box">
+                        $$\int 7e^{-2x}dx = -\frac{7}{2}e^{-2x}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Combine and Solve</div>
+                    <div class="formula-box">
+                        $$e^{-2x}y = -\frac{1}{2}e^{-2x}x^2 - \frac{1}{2}e^{-2x}x - \frac{1}{4}e^{-2x} - \frac{7}{2}e^{-2x} + C$$
+                        $$y = -\frac{1}{2}x^2 - \frac{1}{2}x - \frac{15}{4} + Ce^{2x}$$
+                        $$\boxed{y(x) = Ce^{2x} - \frac{1}{2}x^2 - \frac{1}{2}x - \frac{15}{4}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Detailed Steps</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Setup</div>
+                    <div class="formula-box">
+                        $$y' - 2y = x^2 + 7$$
+                        $$\mu = e^{-2x}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Integrate \(\int x^2 e^{-2x}dx\)</div>
+                    <p>Let \(u = x^2, dv = e^{-2x}dx\)</p>
+                    <div class="formula-box">
+                        $$= -\frac{1}{2}x^2e^{-2x} + \int xe^{-2x}dx$$
+                    </div>
+                    <p>Again: \(u = x, dv = e^{-2x}dx\)</p>
+                    <div class="formula-box">
+                        $$= -\frac{1}{2}x^2e^{-2x} - \frac{1}{2}xe^{-2x} - \frac{1}{4}e^{-2x}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Final Answer</div>
+                    <div class="formula-box">
+                        $$\boxed{y = Ce^{2x} - \frac{1}{2}x^2 - \frac{1}{2}x - \frac{15}{4}}$$
+                    </div>
+                    <p>Transient: None (grows exponentially)</p>
+                    <p>Interval: \((-\infty, \infty)\)</p>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q2-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Verification</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Differentiate Solution</div>
+                    <p>If \(y = Ce^{2x} - \frac{1}{2}x^2 - \frac{1}{2}x - \frac{15}{4}\):</p>
+                    <div class="formula-box">
+                        $$y' = 2Ce^{2x} - x - \frac{1}{2}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Check Original Equation</div>
+                    <div class="formula-box">
+                        $$y' - 2y = 2Ce^{2x} - x - \frac{1}{2} - 2\left(Ce^{2x} - \frac{1}{2}x^2 - \frac{1}{2}x - \frac{15}{4}\right)$$
+                        $$= 2Ce^{2x} - x - \frac{1}{2} - 2Ce^{2x} + x^2 + x + \frac{15}{2}$$
+                        $$= x^2 + \frac{14}{2} = x^2 + 7$$ ✓
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Finding P(x) and Integrating Factor</h2>
+            
+            <div class="question-text">
+                For: $$x\frac{dy}{dx} - y = x^2\sin(x)$$
+                Find P(x), the integrating factor, and the general solution.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">Standard Procedure</button>
+                <button class="tab-button" onclick="showApproach('q3', 2)">Detailed Analysis</button>
+                <button class="tab-button" onclick="showApproach('q3', 3)">Complete Solution</button>
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Standard Procedure</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Write in Standard Form</div>
+                    <div class="formula-box">
+                        $$x\frac{dy}{dx} - y = x^2\sin(x)$$
+                        $$\frac{dy}{dx} - \frac{1}{x}y = x\sin(x)$$
+                    </div>
+                    <p>Therefore: \(\boxed{P(x) = -\frac{1}{x}}\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Find Integrating Factor</div>
+                    <div class="formula-box">
+                        $$\mu(x) = e^{\int P(x)dx} = e^{\int -\frac{1}{x}dx} = e^{-\ln|x|}$$
+                        $$\boxed{\mu(x) = e^{\ln|x|^{-1}} = \frac{1}{x}}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Apply Integrating Factor</div>
+                    <div class="formula-box">
+                        $$\frac{1}{x}\frac{dy}{dx} - \frac{1}{x^2}y = \sin(x)$$
+                        $$\frac{d}{dx}\left[\frac{y}{x}\right] = \sin(x)$$
+                        $$\frac{y}{x} = \int \sin(x)dx = -\cos(x) + C$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve for y</div>
+                    <div class="formula-box">
+                        $$\boxed{y(x) = -x\cos(x) + Cx}$$
+                    </div>
+                    <p>Interval: \((0, \infty)\) or \((-\infty, 0)\) (singular at x = 0)</p>
+                    <p>Transient: None</p>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q3-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Detailed Analysis</h3>
+                
+                <div class="key-concept">
+                    <h4>Singular Points</h4>
+                    When P(x) has discontinuities (like \(-\frac{1}{x}\) at x=0), the solution interval excludes those points.
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Identify P(x)</div>
+                    <div class="formula-box">
+                        $$\frac{dy}{dx} + P(x)y = f(x)$$
+                        $$P(x) = -\frac{1}{x}, \quad f(x) = x\sin(x)$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Integrating Factor</div>
+                    <div class="formula-box">
+                        $$\int -\frac{1}{x}dx = -\ln|x|$$
+                        $$\mu = e^{-\ln|x|} = |x|^{-1} = \frac{1}{|x|}$$
+                    </div>
+                    <p>For simplicity, use \(\mu = \frac{1}{x}\) on appropriate intervals.</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Solution</div>
+                    <div class="formula-box">
+                        $$y = -x\cos(x) + Cx$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q3-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Complete Solution</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">All Steps Together</div>
+                    <div class="formula-box">
+                        $$P(x) = -\frac{1}{x}$$
+                        $$\mu(x) = \frac{1}{x}$$
+                        $$y(x) = -x\cos(x) + Cx$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Verify</div>
+                    <p>Differentiate:</p>
+                    <div class="formula-box">
+                        $$y' = -\cos(x) + x\sin(x) + C$$
+                    </div>
+                    <p>Check:</p>
+                    <div class="formula-box">
+                        $$x(-\cos x + x\sin x + C) - (-x\cos x + Cx)$$
+                        $$= -x\cos x + x^2\sin x + Cx + x\cos x - Cx$$
+                        $$= x^2\sin x$$ ✓
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Final Answers</div>
+                    <p>Largest interval: \((0, \infty)\) or \((-\infty, 0)\)</p>
+                    <p>Transient terms: NONE</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Key Formula:</strong> For \(\frac{dy}{dx} + P(x)y = f(x)\), the solution is \(y = e^{-\int P dx}\left[\int f(x)e^{\int P dx}dx + C\right]\). Always check for singular points where P(x) is undefined—these determine your interval of validity. Practice identifying transient terms (those that decay to zero as x → ∞)!
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            event.target.classList.add('active');
+            
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>

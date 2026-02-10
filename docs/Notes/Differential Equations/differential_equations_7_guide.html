@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 3.3 - Modeling with Systems</title>
+    
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #d4a574;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #ffd89b;
+            --blue-ink: #1e4d7b;
+            --red-ink: #a0522d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f9f5ef 0%, #e8dcc7 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative paper texture */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(212, 165, 116, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .intro strong {
+            color: var(--secondary);
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--red-ink) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 216, 155, 0.1);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+            position: relative;
+            padding-left: 4rem;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, var(--blue-ink) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .step p {
+            margin: 0.5rem 0;
+            line-height: 1.7;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.05) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .hint-box {
+            background: linear-gradient(135deg, rgba(255, 216, 155, 0.2) 0%, rgba(212, 165, 116, 0.1) 100%);
+            border-left: 4px solid var(--highlight);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-concept h4 {
+            color: var(--blue-ink);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(160, 82, 45, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border-left: 4px solid var(--red-ink);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            color: var(--red-ink);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Section 3.3</h1>
+            <div class="subtitle">Systems of First-Order Differential Equations</div>
+        </div>
+        
+        <div class="intro">
+            This section introduces <strong>systems of differential equations</strong> where multiple quantities change simultaneously and interact. Applications include <strong>predator-prey models, chemical reactions, and interconnected tanks</strong>.
+        </div>
+        
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Coupled Tanks Problem</h2>
+            
+            <div class="question-text">
+                Two tanks each hold 100 gallons. Tank A initially has 20 lbs salt, Tank B has 0 lbs. Solution flows between them at 5 gal/min. Find salt in each tank over time.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">System Setup</button>
+<button class="tab-button" onclick="showApproach('q1', 2)">Matrix Method Preview</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: System Setup</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Define Variables</div>
+                    <p>Let A(t) = salt in tank A, B(t) = salt in tank B</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Rate Equations</div>
+                    <p>For each tank, (rate in) - (rate out)</p>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = \frac{5B}{100} - \frac{5A}{100} = \frac{B-A}{20}$$
+$$\frac{dB}{dt} = \frac{5A}{100} - \frac{5B}{100} = \frac{A-B}{20}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Notice Symmetry</div>
+                    <p>Add equations</p>
+                    <div class="formula-box">
+                        $$\frac{d(A+B)}{dt} = 0 \implies A + B = 20 \text{ (constant)}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve Reduced System</div>
+                    <p>Substitute B = 20 - A</p>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = \frac{(20-A)-A}{20} = 1 - \frac{A}{10}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Find Solution</div>
+                    <p>Solve first-order linear DE</p>
+                    <div class="formula-box">
+                        $$A(t) = 10 + 10e^{-t/10}$$
+$$B(t) = 10 - 10e^{-t/10}$$
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Matrix Method Preview</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Write in Matrix Form</div>
+                    <p>System as matrix equation</p>
+                    <div class="formula-box">
+                        $$\begin{pmatrix} A' \\ B' \end{pmatrix} = \begin{pmatrix} -1/20 & 1/20 \\ 1/20 & -1/20 \end{pmatrix}\begin{pmatrix} A \\ B \end{pmatrix}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Find Eigenvalues</div>
+                    <p>Solve characteristic equation</p>
+                    <div class="formula-box">
+                        $$\lambda_1 = 0, \quad \lambda_2 = -1/10$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">General Solution</div>
+                    <p>Combine eigenvector solutions</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Predator-Prey (Lotka-Volterra)</h2>
+            
+            <div class="question-text">
+                Rabbits (R) and foxes (F) satisfy: $$\frac{dR}{dt} = 2R - 0.5RF, \quad \frac{dF}{dt} = -F + 0.1RF$$
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Equilibrium Analysis</button>
+<button class="tab-button" onclick="showApproach('q2', 2)">Phase Plane Analysis</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Equilibrium Analysis</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Find Equilibria</div>
+                    <p>Set both derivatives to zero</p>
+                    <div class="formula-box">
+                        $$R(2 - 0.5F) = 0, \quad F(-1 + 0.1R) = 0$$
+$$(0,0) \text{ and } (10, 4)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Interpret Equilibria</div>
+                    <p>(0,0): extinction\n(10,4): coexistence</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Analyze Stability</div>
+                    <p>Linearize around (10,4)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Predict Behavior</div>
+                    <p>Closed orbits (periodic solutions)</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Phase Plane Analysis</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Find Nullclines</div>
+                    <p>Where dR/dt = 0 and dF/dt = 0</p>
+                    <div class="formula-box">
+                        $$R = 0 \text{ or } F = 4 \text{ (R-nullcline)}$$
+$$F = 0 \text{ or } R = 10 \text{ (F-nullcline)}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Sketch Direction Field</div>
+                    <p>Determine flow in each region</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Identify Cycles</div>
+                    <p>Solutions orbit around (10,4)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Biological Meaning</div>
+                    <p>Population oscillations are natural</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Chemical Reactions</h2>
+            
+            <div class="question-text">
+                Chemical reaction A + B → C has rate k[A][B]. If A(0) = a, B(0) = b, find concentrations over time.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">System from Reaction</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: System from Reaction</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Write Rate Laws</div>
+                    <p>Based on stoichiometry</p>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = -k[A][B]$$
+$$\frac{dB}{dt} = -k[A][B]$$
+$$\frac{dC}{dt} = k[A][B]$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Find Conservation Law</div>
+                    <p>A + C = a (constant), B + C = b</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Reduce to Single Equation</div>
+                    <p>Substitute to eliminate variables</p>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = -k·A·(b-a+A)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve (if a ≠ b)</div>
+                    <p>Use partial fractions</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Summary:</strong> Each problem can be approached from multiple angles. Understanding different methods helps develop deeper mathematical intuition and provides flexibility for solving similar problems in the future. <em>Practice switching between these perspectives to strengthen your problem-solving skills!</em>
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            // Hide all approaches for this question
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected approach
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            // Re-render MathJax for the newly shown content
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // Initial MathJax rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>

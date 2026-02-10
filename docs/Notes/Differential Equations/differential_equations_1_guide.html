@@ -1,0 +1,1187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 1.3 - Solution Strategies</title>
+    
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #d4a574;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #ffd89b;
+            --blue-ink: #1e4d7b;
+            --red-ink: #a0522d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f9f5ef 0%, #e8dcc7 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative paper texture */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(212, 165, 116, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .intro strong {
+            color: var(--secondary);
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--red-ink) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 216, 155, 0.1);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: white;
+            border-left: 4px solid var(--accent);
+            border-radius: 0 6px 6px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border-radius: 50%;
+            font-weight: 700;
+            margin-right: 1rem;
+        }
+        
+        .step-title {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .formula-box {
+            background: #f0f8ff;
+            border: 2px dashed var(--blue-ink);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 6px;
+            font-family: 'Inconsolata', monospace;
+            overflow-x: auto;
+        }
+        
+        .hint-box {
+            background: #fff9e6;
+            border-left: 5px solid #ffd700;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+            font-size: 1rem;
+        }
+        
+        .hint-box::before {
+            content: '💡 Hint: ';
+            font-weight: 700;
+            color: #b8860b;
+        }
+        
+        .warning-box {
+            background: #ffebee;
+            border-left: 5px solid #c62828;
+            padding: 1rem 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .warning-box::before {
+            content: '⚠️ Common Mistake: ';
+            font-weight: 700;
+            color: #c62828;
+        }
+        
+        code {
+            font-family: 'Inconsolata', monospace;
+            background: rgba(30, 77, 123, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.95em;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.08) 0%, rgba(212, 165, 116, 0.12) 100%);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border: 1px solid var(--accent);
+        }
+        
+        .key-concept h4 {
+            color: var(--secondary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .toggle-section {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        .toggle-section::before {
+            content: '▶ ';
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+        
+        .toggle-section.open::before {
+            transform: rotate(90deg);
+        }
+        
+        .collapsible {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .collapsible.open {
+            max-height: 2000px;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 1.5rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .approach-tabs {
+                flex-direction: column;
+            }
+            
+            .tab-button {
+                border-radius: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Differential Equations</h1>
+            <div class="subtitle">Solution Strategies to DE as Mathematical Models</div>
+        </div>
+        
+        <div class="intro">
+            <strong>Welcome!</strong> This interactive guide presents <em>distinct approaches</em> for solving each differential equation problem. Each question offers multiple solution strategies, ranging from basic formulation to advanced insights. Click through the tabs to explore different ways of thinking about each problem.
+        </div>
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Population Model with Birth and Death</h2>
+            
+            <div class="question-text">
+                The standard population model \(\frac{dP}{dt} = kP\) only considers growth. Create a model that accounts for <em>both</em> birth and death rates, where both are proportional to the population. Use constants \(k_1\) for birth rate and \(k_2\) for death rate.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">Verbal Reasoning</button>
+                <button class="tab-button" onclick="showApproach('q1', 2)">Rate Analysis</button>
+                <button class="tab-button" onclick="showApproach('q1', 3)">Net Rate Method</button>
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Verbal Reasoning</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Understand the Rates</div>
+                    <p>Birth rate: "proportional to population" → \(k_1 P\)</p>
+                    <p>Death rate: "proportional to population" → \(k_2 P\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Net Change = Births − Deaths</div>
+                    <p>Population <em>increases</em> from births and <em>decreases</em> from deaths</p>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt} = \text{(rate of births)} - \text{(rate of deaths)}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Write the Model</div>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt} = k_1 P - k_2 P$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    Notice this can be factored: \(\frac{dP}{dt} = (k_1 - k_2)P\). If \(k_1 > k_2\), population grows; if \(k_1 < k_2\), it declines!
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Rate Analysis</h3>
+                
+                <div class="key-concept">
+                    <h4>Key Concept: Proportionality</h4>
+                    "Rate is proportional to X" means: Rate = (constant) × X
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Identify Each Component</div>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li><strong>Birth rate</strong> ∝ P → Birth rate = \(k_1 P\) (people/time)</li>
+                        <li><strong>Death rate</strong> ∝ P → Death rate = \(k_2 P\) (people/time)</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Apply the Net Rate Principle</div>
+                    <p>The rate of change of population equals the difference between inflow and outflow:</p>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt} = \text{inflow} - \text{outflow} = k_1 P - k_2 P$$
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    Don't confuse proportionality with equality! "Proportional to P" means multiply by a constant, not "equals P."
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q1-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Net Rate Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Define Net Rate</div>
+                    <p>Net rate = Total change in population per unit time</p>
+                    <p>This equals births minus deaths (both occurring simultaneously)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Express Mathematically</div>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt} = (\text{birth rate}) - (\text{death rate}) = k_1 P - k_2 P$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Simplify (Optional)</div>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt} = (k_1 - k_2)P = kP \quad \text{where } k = k_1 - k_2$$
+                    </div>
+                    <p>This shows the model is actually the same <em>form</em> as the simple exponential model, but with an effective rate \(k\) that can be positive or negative!</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Innovation Diffusion Model</h2>
+            
+            <div class="question-text">
+                A technological innovation spreads through a community of \(n\) people. The rate of adoption is jointly proportional to: (1) the number who have adopted it, and (2) the number who haven't. Initially, one person adopts. Find \(\frac{dx}{dt}\) and \(x(0)\).
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Logistic Reasoning</button>
+                <button class="tab-button" onclick="showApproach('q2', 2)">Contact Model</button>
+                <button class="tab-button" onclick="showApproach('q2', 3)">Standard Form</button>
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Logistic Reasoning</h3>
+                
+                <div class="key-concept">
+                    <h4>Key Insight: Spread Requires Contact</h4>
+                    Innovations spread when adopters meet non-adopters. The rate depends on both groups!
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Define Variables</div>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>\(x(t)\) = number who have adopted</li>
+                        <li>\(n - x(t)\) = number who haven't adopted</li>
+                        <li>\(n\) = total population (fixed)</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Joint Proportionality</div>
+                    <p>"Jointly proportional to A and B" means: Rate = k · A · B</p>
+                    <div class="formula-box">
+                        $$\frac{dx}{dt} = k \cdot x \cdot (n - x)$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Initial Condition</div>
+                    <p>"Initially one person adopts" means at \(t = 0\), \(x = 1\):</p>
+                    <div class="formula-box">
+                        $$x(0) = 1$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    This is the famous <strong>logistic equation</strong>! It models many real-world phenomena: disease spread, rumors, technology adoption, population growth with carrying capacity.
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Contact Model</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Think About Encounters</div>
+                    <p>For the innovation to spread, an adopter must encounter a non-adopter</p>
+                    <p>Number of possible encounters ≈ (adopters) × (non-adopters)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Set Up the Rate</div>
+                    <p>Rate of new adoptions = \(k\) × (probability of encounter)</p>
+                    <div class="formula-box">
+                        $$\frac{dx}{dt} = k \cdot x(t) \cdot [n - x(t)]$$
+                    </div>
+                    <p>where \(k > 0\) captures the "effectiveness" of each encounter</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Add Initial State</div>
+                    <div class="formula-box">
+                        $$x(0) = 1$$
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    Make sure to use \((n - x)\) not just \(n\). The non-adopters decrease over time!
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q2-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Standard Form</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Translate "Jointly Proportional"</div>
+                    <p>Jointly proportional to X and Y → Rate = k·X·Y</p>
+                    <p>Here: X = \(x\), Y = \((n-x)\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Write the Differential Equation</div>
+                    <div class="formula-box">
+                        $$\boxed{\frac{dx}{dt} = kx(n-x)}$$
+                    </div>
+                    <p>This can also be written as: \(\frac{dx}{dt} = knx - kx^2\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">State Initial Condition</div>
+                    <div class="formula-box">
+                        $$\boxed{x(0) = 1}$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    Notice: When \(x\) is small, \((n-x) ≈ n\), so \(\frac{dx}{dt} ≈ knx\) (exponential). When \(x ≈ n\), \(\frac{dx}{dt} ≈ 0\) (saturation). This creates the characteristic S-curve!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Mixing Tank Problem</h2>
+            
+            <div class="question-text">
+                A tank initially holds 700 gallons of water with 50 pounds of salt dissolved. Brine (2 lb/gal concentration) enters at 3 gal/min. The well-mixed solution exits at 2 gal/min. Find \(\frac{dA}{dt}\) in lb/min.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">Rate In - Rate Out</button>
+                <button class="tab-button" onclick="showApproach('q3', 2)">Balance Principle</button>
+                <button class="tab-button" onclick="showApproach('q3', 3)">Detailed Analysis</button>
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Rate In - Rate Out</h3>
+                
+                <div class="key-concept">
+                    <h4>Fundamental Mixing Principle</h4>
+                    $$\frac{dA}{dt} = \text{(rate salt in)} - \text{(rate salt out)}$$
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Calculate Rate In</div>
+                    <p>Salt enters at: (concentration) × (flow rate)</p>
+                    <div class="formula-box">
+                        $$\text{Rate in} = 2 \,\text{lb/gal} \times 3\, \text{gal/min} = 6\, \text{lb/min}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Calculate Rate Out</div>
+                    <p>First, find the concentration in tank at time t:</p>
+                    <p>Volume at time t: \(V(t) = 700 + (3-2)t = 700 + t\) gallons</p>
+                    <p>Concentration: \(\frac{A(t)}{700+t}\) lb/gal</p>
+                    <div class="formula-box">
+                        $$\text{Rate out} = \frac{A(t)}{700+t} \times 2 = \frac{2A}{700+t}\, \text{lb/min}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Write the Differential Equation</div>
+                    <div class="formula-box">
+                        $$\boxed{\frac{dA}{dt} = 6 - \frac{2A}{700+t}}$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    The volume changes over time because inflow ≠ outflow! Always track the volume when rates differ.
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q3-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Balance Principle</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Set Up the Balance</div>
+                    <p>Change in salt = (salt added) - (salt removed)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Salt Added Per Unit Time</div>
+                    <p>Entering solution: 2 lb/gal at 3 gal/min</p>
+                    <div class="formula-box">
+                        $$\text{Salt in} = 2 \times 3 = 6\, \text{lb/min}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Salt Removed Per Unit Time</div>
+                    <p><strong>Key:</strong> Volume increases over time!</p>
+                    <p>At time t: Volume = 700 + (3-2)t = 700 + t</p>
+                    <p>Concentration in tank: A/(700+t) lb/gal</p>
+                    <p>Leaving at 2 gal/min:</p>
+                    <div class="formula-box">
+                        $$\text{Salt out} = \frac{A}{700+t} \times 2 = \frac{2A}{700+t}\, \text{lb/min}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Form the Equation</div>
+                    <div class="formula-box">
+                        $$\frac{dA}{dt} = 6 - \frac{2A}{700+t}$$
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    Don't use 700 as a constant for volume! Since inflow > outflow, the tank is filling up.
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q3-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Detailed Analysis</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Organize Given Information</div>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>Initial volume: 700 gal</li>
+                        <li>Initial salt: 50 lb</li>
+                        <li>Inflow rate: 3 gal/min</li>
+                        <li>Outflow rate: 2 gal/min</li>
+                        <li>Incoming concentration: 2 lb/gal</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Track Volume Change</div>
+                    <p>Net flow = inflow - outflow = 3 - 2 = 1 gal/min</p>
+                    <div class="formula-box">
+                        $$V(t) = 700 + 1 \cdot t = 700 + t\, \text{gallons}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Calculate Salt Flow Rates</div>
+                    <p><strong>Inflow:</strong></p>
+                    <div class="formula-box">
+                        $$\text{Salt rate in} = (\text{concentration})(\text{flow}) = (2)(3) = 6\, \text{lb/min}$$
+                    </div>
+                    <p><strong>Outflow:</strong></p>
+                    <p>Current concentration = A(t)/(700+t)</p>
+                    <div class="formula-box">
+                        $$\text{Salt rate out} = \left(\frac{A}{700+t}\right)(2) = \frac{2A}{700+t}\, \text{lb/min}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Assemble the Model</div>
+                    <div class="formula-box">
+                        $$\boxed{\frac{dA}{dt} = 6 - \frac{2A}{700+t}\, \text{lb/min}}$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    This is a <strong>linear first-order ODE</strong>. The volume in the denominator makes it time-varying!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 4 -->
+        <div class="question-card" id="q4">
+            <span class="question-number">4</span>
+            <h2 class="question-title">RC Circuit - Capacitor Charging</h2>
+            
+            <div class="question-text">
+                A series circuit has a resistor (resistance R) and a capacitor (capacitance C). An impressed voltage E(t) is applied. Find the differential equation for the charge q(t) on the capacitor.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q4', 1)">Kirchhoff's Law</button>
+                <button class="tab-button" onclick="showApproach('q4', 2)">Component Analysis</button>
+                <button class="tab-button" onclick="showApproach('q4', 3)">Circuit Theory</button>
+            </div>
+            
+            <div class="approach-content active" id="q4-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Kirchhoff's Voltage Law</h3>
+                
+                <div class="key-concept">
+                    <h4>Kirchhoff's Voltage Law (KVL)</h4>
+                    The sum of voltage drops around a closed loop equals the impressed voltage.
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Identify Voltage Drops</div>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>Across resistor: \(V_R = iR\) where \(i = \frac{dq}{dt}\)</li>
+                        <li>Across capacitor: \(V_C = \frac{q}{C}\)</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Apply KVL</div>
+                    <p>Sum of drops = impressed voltage:</p>
+                    <div class="formula-box">
+                        $$iR + \frac{q}{C} = E(t)$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Express in Terms of q</div>
+                    <p>Since \(i = \frac{dq}{dt}\):</p>
+                    <div class="formula-box">
+                        $$R\frac{dq}{dt} + \frac{q}{C} = E(t)$$
+                    </div>
+                    <p>Solving for \(\frac{dq}{dt}\):</p>
+                    <div class="formula-box">
+                        $$\boxed{\frac{dq}{dt} = \frac{1}{R}\left(E(t) - \frac{q}{C}\right)}$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    Alternative form: \(\frac{dq}{dt} = \frac{E(t)}{R} - \frac{q}{RC}\)
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q4-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Component Analysis</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Resistor Behavior</div>
+                    <p>Ohm's Law: \(V = iR\)</p>
+                    <p>Current through resistor: \(i = \frac{dq}{dt}\)</p>
+                    <div class="formula-box">
+                        $$V_R = R\frac{dq}{dt}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Capacitor Behavior</div>
+                    <p>Relationship between charge and voltage:</p>
+                    <div class="formula-box">
+                        $$q = CV \quad \Rightarrow \quad V_C = \frac{q}{C}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Conservation of Energy</div>
+                    <p>Voltage source = sum of voltage drops:</p>
+                    <div class="formula-box">
+                        $$E(t) = V_R + V_C = R\frac{dq}{dt} + \frac{q}{C}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve for dq/dt</div>
+                    <div class="formula-box">
+                        $$\boxed{\frac{dq}{dt} = \frac{E(t) - q/C}{R}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q4-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Circuit Theory Derivation</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Fundamental Relationships</div>
+                    <p>For a series RC circuit:</p>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>Current is same everywhere: \(i = \frac{dq}{dt}\)</li>
+                        <li>Voltages add: \(E(t) = V_R + V_C\)</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Express Each Voltage</div>
+                    <p>Resistor (Ohm's law): \(V_R = iR = R\frac{dq}{dt}\)</p>
+                    <p>Capacitor (definition): \(V_C = \frac{q}{C}\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Combine and Rearrange</div>
+                    <div class="formula-box">
+                        $$E(t) = R\frac{dq}{dt} + \frac{q}{C}$$
+                        $$R\frac{dq}{dt} = E(t) - \frac{q}{C}$$
+                        $$\boxed{\frac{dq}{dt} = \frac{1}{R}\left(E - \frac{q}{C}\right)}$$
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    Don't confuse q (charge) with Q (sometimes used for heat). Always check your notation!
+                </div>
+                
+                <div class="hint-box">
+                    The time constant is \(\tau = RC\). This determines how fast the capacitor charges!
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 5 -->
+        <div class="question-card" id="q5">
+            <span class="question-number">5</span>
+            <h2 class="question-title">Tractrix Curve - Waterskier Problem</h2>
+            
+            <div class="question-text">
+                A motorboat at the origin moves along the positive x-axis, pulling a waterskier on a taut rope of length \(a\). The skier starts at (0, a). The rope is always tangent to the path C. Find a differential equation for the path using the concept of slope.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q5', 1)">Geometric Method</button>
+                <button class="tab-button" onclick="showApproach('q5', 2)">Tangent Line Analysis</button>
+                <button class="tab-button" onclick="showApproach('q5', 3)">Pythagorean Approach</button>
+            </div>
+            
+            <div class="approach-content active" id="q5-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Geometric Method</h3>
+                
+                <div class="key-concept">
+                    <h4>Key Insight</h4>
+                    The rope is tangent to the curve and has length \(a\). The boat is at \((x, 0)\) when the skier is at \((x, y)\).
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Set Up the Geometry</div>
+                    <p>Skier at point P(x, y)</p>
+                    <p>Boat at point B on x-axis</p>
+                    <p>Rope: line from B to P, length = a, tangent to curve at P</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Use Slope of Tangent</div>
+                    <p>The rope has slope \(\frac{dy}{dx} = y'\)</p>
+                    <p>If boat is at \((x_B, 0)\), the slope is also:</p>
+                    <div class="formula-box">
+                        $$y' = \frac{y - 0}{x - x_B} = \frac{y}{x - x_B}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Use Rope Length</div>
+                    <p>Distance from boat to skier = a:</p>
+                    <div class="formula-box">
+                        $$\sqrt{(x - x_B)^2 + y^2} = a$$
+                        $$(x - x_B)^2 + y^2 = a^2$$
+                        $$x - x_B = -\sqrt{a^2 - y^2}$$
+                    </div>
+                    <p>(Negative because boat is ahead: \(x_B > x\))</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Combine to Get y'</div>
+                    <div class="formula-box">
+                        $$y' = \frac{y}{x - x_B} = \frac{y}{-\sqrt{a^2 - y^2}}$$
+                        $$\boxed{y' = -\frac{y}{\sqrt{a^2 - y^2}}}$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    The negative sign indicates the curve is decreasing (skier moving down as pulled forward).
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q5-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Tangent Line Analysis</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Identify the Tangent</div>
+                    <p>At point (x, y), the tangent line (rope) extends to the x-axis</p>
+                    <p>Length of this tangent segment = a</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Find Tangent Components</div>
+                    <p>Horizontal component: \(x - x_B\)</p>
+                    <p>Vertical component: \(y - 0 = y\)</p>
+                    <p>Length: \(\sqrt{(x-x_B)^2 + y^2} = a\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Relate to Slope</div>
+                    <p>Slope of rope = \(\frac{y}{x - x_B}\)</p>
+                    <p>But this equals \(y'\), the derivative!</p>
+                    <p>From length constraint:</p>
+                    <div class="formula-box">
+                        $$(x - x_B)^2 = a^2 - y^2$$
+                        $$x - x_B = \pm\sqrt{a^2 - y^2}$$
+                    </div>
+                    <p>Since boat is ahead, choose negative:</p>
+                    <div class="formula-box">
+                        $$y' = \frac{y}{-\sqrt{a^2 - y^2}} = -\frac{y}{\sqrt{a^2 - y^2}}$$
+                    </div>
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q5-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Pythagorean Approach</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Draw the Right Triangle</div>
+                    <p>Vertices: Skier (x, y), Boat (\(x_B\), 0), Point (x, 0)</p>
+                    <p>Hypotenuse (rope): length a</p>
+                    <p>Legs: horizontal \(|x_B - x|\), vertical \(y\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Apply Pythagorean Theorem</div>
+                    <div class="formula-box">
+                        $$(x_B - x)^2 + y^2 = a^2$$
+                    </div>
+                    <p>Solving for horizontal leg:</p>
+                    <div class="formula-box">
+                        $$x_B - x = \sqrt{a^2 - y^2}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Calculate Slope</div>
+                    <p>The rope slope from skier down to boat:</p>
+                    <div class="formula-box">
+                        $$y' = \frac{0 - y}{x_B - x} = \frac{-y}{\sqrt{a^2 - y^2}}$$
+                        $$\boxed{y' = -\frac{y}{\sqrt{a^2 - y^2}}}$$
+                    </div>
+                </div>
+                
+                <div class="warning-box">
+                    Be careful with signs! The boat is at a <em>greater</em> x-coordinate, so \(x_B > x\).
+                </div>
+            </div>
+        </div>
+        
+        <!-- Question 6 -->
+        <div class="question-card" id="q6">
+            <span class="question-number">6</span>
+            <h2 class="question-title">Exponential Growth Rate Calculation</h2>
+            
+            <div class="question-text">
+                Given \(\frac{dP}{dt} = 0.15P(t)\) for a cell culture (in millions), find how fast the culture is growing when \(P = 2\) million cells.
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q6', 1)">Direct Substitution</button>
+                <button class="tab-button" onclick="showApproach('q6', 2)">Rate Interpretation</button>
+                <button class="tab-button" onclick="showApproach('q6', 3)">Percent Growth</button>
+            </div>
+            
+            <div class="approach-content active" id="q6-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Direct Substitution</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Understand the Question</div>
+                    <p>"How fast is the culture growing?" asks for \(\frac{dP}{dt}\)</p>
+                    <p>"When the size reaches 2 million" means \(P = 2\)</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Use the Given Equation</div>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt} = 0.15P$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Substitute P = 2</div>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt} = 0.15 \times 2 = 0.3$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">State Answer with Units</div>
+                    <div class="formula-box">
+                        $$\boxed{0.3 \text{ million cells per hour}}$$
+                    </div>
+                    <p>Or equivalently: 300,000 cells per hour</p>
+                </div>
+                
+                <div class="hint-box">
+                    The rate is <em>proportional</em> to the population. Bigger population → faster growth!
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q6-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Rate Interpretation</h3>
+                
+                <div class="key-concept">
+                    <h4>Understanding \(\frac{dP}{dt}\)</h4>
+                    This is the <strong>instantaneous rate of change</strong> of population with respect to time.
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Interpret the Model</div>
+                    <p>\(\frac{dP}{dt} = 0.15P\) means:</p>
+                    <ul style="margin-left: 2rem; margin-top: 0.5rem;">
+                        <li>Growth rate is proportional to current population</li>
+                        <li>Constant of proportionality: 0.15 per hour</li>
+                    </ul>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Evaluate at P = 2</div>
+                    <p>When population = 2 million:</p>
+                    <div class="formula-box">
+                        $$\frac{dP}{dt}\bigg|_{P=2} = 0.15(2) = 0.3$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Interpret the Result</div>
+                    <p>At this instant, the culture is growing at:</p>
+                    <div class="formula-box">
+                        $$\boxed{0.3 \text{ million cells/hour} = 300{,}000 \text{ cells/hour}}$$
+                    </div>
+                </div>
+                
+                <div class="hint-box">
+                    This means: "right now, the population is increasing by 0.3 million cells every hour"
+                </div>
+            </div>
+            
+            <div class="approach-content" id="q6-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Percent Growth Rate</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Recognize Exponential Form</div>
+                    <p>The equation \(\frac{dP}{dt} = 0.15P\) is exponential growth</p>
+                    <p>0.15 = 15% per hour growth rate</p>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Calculate Absolute Rate</div>
+                    <p>15% of 2 million cells:</p>
+                    <div class="formula-box">
+                        $$0.15 \times 2 = 0.3 \text{ million cells/hour}$$
+                    </div>
+                </div>
+                
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Final Answer</div>
+                    <div class="formula-box">
+                        $$\boxed{0.3 \text{ million cells per hour}}$$
+                    </div>
+                </div>
+                
+                <div class="key-concept">
+                    <h4>Perspective</h4>
+                    <p>At P = 1 million: rate = 0.15 million/hr</p>
+                    <p>At P = 2 million: rate = 0.30 million/hr</p>
+                    <p>At P = 4 million: rate = 0.60 million/hr</p>
+                    <p>Growth accelerates as population increases!</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Summary:</strong> Each problem can be approached from multiple angles. Understanding different methods helps develop deeper mathematical intuition and provides flexibility for solving similar problems in the future. <em>Practice switching between these perspectives to strengthen your problem-solving skills!</em>
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            // Hide all approaches for this question
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected approach
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            // Re-render MathJax for the newly shown content
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // Initial MathJax rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>

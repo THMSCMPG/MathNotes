@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 4.1 - Linear Differential Equations</title>
+    
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #d4a574;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #ffd89b;
+            --blue-ink: #1e4d7b;
+            --red-ink: #a0522d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f9f5ef 0%, #e8dcc7 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative paper texture */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(212, 165, 116, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .intro strong {
+            color: var(--secondary);
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--red-ink) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 216, 155, 0.1);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+            position: relative;
+            padding-left: 4rem;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, var(--blue-ink) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .step p {
+            margin: 0.5rem 0;
+            line-height: 1.7;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.05) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .hint-box {
+            background: linear-gradient(135deg, rgba(255, 216, 155, 0.2) 0%, rgba(212, 165, 116, 0.1) 100%);
+            border-left: 4px solid var(--highlight);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-concept h4 {
+            color: var(--blue-ink);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(160, 82, 45, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border-left: 4px solid var(--red-ink);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            color: var(--red-ink);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Section 4.1</h1>
+            <div class="subtitle">Theory and Fundamental Properties</div>
+        </div>
+        
+        <div class="intro">
+            This section develops the <strong>fundamental theory</strong> of higher-order linear differential equations, including <strong>existence and uniqueness theorems, superposition principle, linear independence</strong>, and the <strong>Wronskian</strong>.
+        </div>
+        
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Linear Independence and Wronskian</h2>
+            
+            <div class="question-text">
+                Determine if {e^x, e^(2x), e^(3x)} is linearly independent on (-∞, ∞)
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">Wronskian Method</button>
+<button class="tab-button" onclick="showApproach('q1', 2)">Definition Check</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Wronskian Method</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Compute the Wronskian</div>
+                    <p>For three functions, 3×3 determinant</p>
+                    <div class="formula-box">
+                        $$W(e^x, e^{2x}, e^{3x}) = \begin{vmatrix} e^x & e^{2x} & e^{3x} \\ e^x & 2e^{2x} & 3e^{3x} \\ e^x & 4e^{2x} & 9e^{3x} \end{vmatrix}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Factor Out Common Terms</div>
+                    <p>Factor e^(x+2x+3x) = e^(6x)</p>
+                    <div class="formula-box">
+                        $$W = e^{6x}\begin{vmatrix} 1 & 1 & 1 \\ 1 & 2 & 3 \\ 1 & 4 & 9 \end{vmatrix}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Evaluate Determinant</div>
+                    <p>Expand along first row</p>
+                    <div class="formula-box">
+                        $$= e^{6x}[1(18-12) - 1(9-3) + 1(4-2)] = e^{6x}(6-6+2) = 2e^{6x}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Conclude</div>
+                    <p>W ≠ 0 for all x, so functions are linearly independent</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Definition Check</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Set Up Linear Combination</div>
+                    <p>Test if c₁e^x + c₂e^(2x) + c₃e^(3x) = 0 implies all c_i = 0</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Evaluate at Special Points</div>
+                    <p>Try x = 0, x = ln2, etc.</p>
+                    <div class="formula-box">
+                        $$x=0: c_1 + c_2 + c_3 = 0$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Create System</div>
+                    <p>Get more equations by differentiation or evaluation</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Solve System</div>
+                    <p>Show only trivial solution exists</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Fundamental Set of Solutions</h2>
+            
+            <div class="question-text">
+                Verify that {e^(-x), xe^(-x), x²e^(-x)} forms a fundamental set for y''' + 3y'' + 3y' + y = 0
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Complete Verification</button>
+<button class="tab-button" onclick="showApproach('q2', 2)">General Solution</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Complete Verification</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Verify Each is a Solution</div>
+                    <p>Substitute each function into the DE</p>
+                    <div class="formula-box">
+                        $$y_1 = e^{-x}: y_1''' + 3y_1'' + 3y_1' + y_1 = -e^{-x} + 3e^{-x} - 3e^{-x} + e^{-x} = 0 \checkmark$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Check Linear Independence</div>
+                    <p>Compute Wronskian at any point, say x = 0</p>
+                    <div class="formula-box">
+                        $$W(0) = \begin{vmatrix} 1 & 0 & 0 \\ -1 & 1 & 0 \\ 1 & -2 & 2 \end{vmatrix} = 2 \neq 0$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Count Functions</div>
+                    <p>Have 3 functions for 3rd-order DE</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Conclude</div>
+                    <p>Forms a fundamental set</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: General Solution</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Form General Solution</div>
+                    <p>Linear combination of fundamental set</p>
+                    <div class="formula-box">
+                        $$y = c_1e^{-x} + c_2xe^{-x} + c_3x^2e^{-x}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Factor Common Term</div>
+                    <p>Simplify</p>
+                    <div class="formula-box">
+                        $$y = e^{-x}(c_1 + c_2x + c_3x^2)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Apply Initial Conditions</div>
+                    <p>If given IVP, solve for constants</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Existence and Uniqueness</h2>
+            
+            <div class="question-text">
+                For y'' + p(x)y' + q(x)y = f(x) with y(0) = 1, y'(0) = 2, when is there a unique solution?
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">Theorem Application</button>
+<button class="tab-button" onclick="showApproach('q3', 2)">Troublesome Points</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Theorem Application</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">State Theorem</div>
+                    <p>Existence and Uniqueness Theorem</p>
+                    <div class="formula-box">
+                        If p(x), q(x), and f(x) are continuous on interval I containing x₀, then IVP has unique solution on I
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Check Conditions</div>
+                    <p>Verify continuity of coefficients</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Identify Interval</div>
+                    <p>Find largest interval where all are continuous</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Conclude</div>
+                    <p>Unique solution exists on that interval</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q3-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Troublesome Points</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Example with Discontinuity</div>
+                    <p>Consider y'' + (1/x)y' + y = 0</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Identify Singular Point</div>
+                    <p>x = 0 is singular (p(x) = 1/x not continuous)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Determine Interval</div>
+                    <p>For initial condition at x = 1, interval might be (0, ∞)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Caution</div>
+                    <p>Cannot guarantee solution passes through x = 0</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 4 -->
+        <div class="question-card" id="q4">
+            <span class="question-number">4</span>
+            <h2 class="question-title">Superposition Principle</h2>
+            
+            <div class="question-text">
+                If y₁ and y₂ satisfy y'' + 4y = x², what can you say about c₁y₁ + c₂y₂?
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q4', 1)">Direct Verification</button>
+<button class="tab-button" onclick="showApproach('q4', 2)">Homogeneous vs Inhomogeneous</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q4-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Direct Verification</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Form Linear Combination</div>
+                    <p>Let y = c₁y₁ + c₂y₂</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Compute Derivatives</div>
+                    <p>y'' = c₁y₁'' + c₂y₂''</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Substitute into DE</div>
+                    <p>y'' + 4y = c₁(y₁'' + 4y₁) + c₂(y₂'' + 4y₂)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Use Given Information</div>
+                    <p>Both parentheses equal x²</p>
+                    <div class="formula-box">
+                        $$= c_1x^2 + c_2x^2 = (c_1+c_2)x^2$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Conclusion</div>
+                    <p>Linear combination satisfies DE only if c₁+c₂ = 1 (inhomogeneous!)</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q4-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Homogeneous vs Inhomogeneous</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Note This is NOT Homogeneous</div>
+                    <p>Right side is x², not 0</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Superposition for Homogeneous</div>
+                    <p>Works without restriction on constants</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Particular Solutions</div>
+                    <p>For inhomogeneous, need y₁ - y₂ satisfies homogeneous</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">General Solution Structure</div>
+                    <p>y = y_h + y_p</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Summary:</strong> Each problem can be approached from multiple angles. Understanding different methods helps develop deeper mathematical intuition and provides flexibility for solving similar problems in the future. <em>Practice switching between these perspectives to strengthen your problem-solving skills!</em>
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            // Hide all approaches for this question
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected approach
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            // Re-render MathJax for the newly shown content
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // Initial MathJax rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>

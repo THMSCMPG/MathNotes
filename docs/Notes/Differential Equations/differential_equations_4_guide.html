@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Differential Equations 2.6 - Numerical Solutions</title>
+    
+    <!-- MathJax for rendering equations -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Inconsolata:wght@400;600&family=Playfair+Display:wght@700;900&display=swap');
+        
+        :root {
+            --primary: #2c1810;
+            --secondary: #8b4513;
+            --accent: #d4a574;
+            --paper: #f9f5ef;
+            --ink: #1a1a1a;
+            --highlight: #ffd89b;
+            --blue-ink: #1e4d7b;
+            --red-ink: #a0522d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f9f5ef 0%, #e8dcc7 100%);
+            color: var(--ink);
+            line-height: 1.7;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--paper);
+            box-shadow: 0 20px 60px rgba(44, 24, 16, 0.3),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Decorative paper texture */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.01) 2px, rgba(0,0,0,0.01) 4px);
+            pointer-events: none;
+            opacity: 0.3;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 3px double var(--secondary);
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -1px;
+            text-shadow: 2px 2px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--secondary);
+            font-style: italic;
+            font-weight: 600;
+        }
+        
+        .intro {
+            background: linear-gradient(135deg, rgba(139, 69, 19, 0.05) 0%, rgba(212, 165, 116, 0.1) 100%);
+            padding: 2rem;
+            border-left: 5px solid var(--secondary);
+            margin-bottom: 3rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 1.1rem;
+        }
+        
+        .intro strong {
+            color: var(--secondary);
+        }
+        
+        .question-card {
+            background: white;
+            border: 2px solid var(--accent);
+            border-radius: 8px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .question-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--blue-ink) 0%, var(--red-ink) 100%);
+        }
+        
+        .question-card:hover {
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+            transform: translateY(-2px);
+        }
+        
+        .question-number {
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--secondary);
+            margin-right: 1rem;
+            text-shadow: 1px 1px 0 rgba(212, 165, 116, 0.3);
+        }
+        
+        .question-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: inline;
+        }
+        
+        .question-text {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin: 1.5rem 0;
+            padding: 1.5rem;
+            background: rgba(255, 216, 155, 0.1);
+            border-radius: 6px;
+        }
+        
+        .approach-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin: 2rem 0 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tab-button {
+            font-family: 'Crimson Text', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: var(--paper);
+            border: 2px solid var(--accent);
+            border-radius: 6px 6px 0 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: var(--secondary);
+        }
+        
+        .tab-button:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tab-button.active {
+            background: var(--blue-ink);
+            color: white;
+            border-color: var(--blue-ink);
+        }
+        
+        .approach-content {
+            display: none;
+            padding: 2rem;
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.03) 0%, rgba(212, 165, 116, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 0 8px 8px 8px;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .approach-content.active {
+            display: block;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            background: white;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--accent);
+            position: relative;
+            padding-left: 4rem;
+        }
+        
+        .step-number {
+            position: absolute;
+            left: 1rem;
+            top: 1.5rem;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(135deg, var(--blue-ink) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        
+        .step-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+        
+        .step p {
+            margin: 0.5rem 0;
+            line-height: 1.7;
+        }
+        
+        .formula-box {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.05) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--accent);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            font-size: 1.2rem;
+            text-align: center;
+        }
+        
+        .hint-box {
+            background: linear-gradient(135deg, rgba(255, 216, 155, 0.2) 0%, rgba(212, 165, 116, 0.1) 100%);
+            border-left: 4px solid var(--highlight);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            font-style: italic;
+        }
+        
+        .key-concept {
+            background: linear-gradient(135deg, rgba(30, 77, 123, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border: 2px solid var(--blue-ink);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .key-concept h4 {
+            color: var(--blue-ink);
+            font-size: 1.3rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .warning-box {
+            background: linear-gradient(135deg, rgba(160, 82, 45, 0.1) 0%, rgba(139, 69, 19, 0.05) 100%);
+            border-left: 4px solid var(--red-ink);
+            padding: 1rem 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+            color: var(--red-ink);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Section 2.6</h1>
+            <div class="subtitle">Euler Methods and Numerical Approximations</div>
+        </div>
+        
+        <div class="intro">
+            This section covers <strong>numerical approximation methods</strong> for solving differential equations when exact solutions are difficult or impossible to find. We focus on <strong>Euler's method</strong> and <strong>improved Euler method</strong>, learning how to implement these techniques and assess their accuracy.
+        </div>
+        
+        
+        <!-- Question 1 -->
+        <div class="question-card" id="q1">
+            <span class="question-number">1</span>
+            <h2 class="question-title">Standard Euler Method</h2>
+            
+            <div class="question-text">
+                Use Euler's method with h = 0.1 to approximate y(1.5) for the IVP: $$y' = 2xy, \quad y(1) = 1$$
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q1', 1)">Step-by-Step Iteration</button>
+<button class="tab-button" onclick="showApproach('q1', 2)">Tabular Organization</button>
+<button class="tab-button" onclick="showApproach('q1', 3)">Error Analysis</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q1-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Step-by-Step Iteration</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Understand Euler's Formula</div>
+                    <p>The basic Euler iteration formula</p>
+                    <div class="formula-box">
+                        $$y_{n+1} = y_n + h \cdot f(x_n, y_n)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Identify Given Information</div>
+                    <p>Initial condition: (x₀, y₀) = (1, 1)\nStep size: h = 0.1\nFunction: f(x, y) = 2xy</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">First Iteration (n=0)</div>
+                    <p>Calculate from x = 1.0 to x = 1.1</p>
+                    <div class="formula-box">
+                        $$x_1 = 1.1$$
+$$y_1 = y_0 + h \cdot f(x_0, y_0) = 1 + 0.1(2)(1)(1) = 1.2$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Second Iteration (n=1)</div>
+                    <p>Calculate from x = 1.1 to x = 1.2</p>
+                    <div class="formula-box">
+                        $$x_2 = 1.2$$
+$$y_2 = 1.2 + 0.1(2)(1.1)(1.2) = 1.464$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">5</span>
+                    <div class="step-title">Continue to Target</div>
+                    <p>Repeat until x = 1.5 (5 iterations total)</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q1-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Tabular Organization</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Set Up Table</div>
+                    <p>Create columns for: n, xₙ, yₙ, f(xₙ, yₙ), h·f(xₙ, yₙ)</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Fill Initial Row</div>
+                    <p>n = 0: x₀ = 1, y₀ = 1, f(1, 1) = 2, h·f = 0.2</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Compute Each Row</div>
+                    <p>Each new yₙ₊₁ = previous yₙ + h·f from previous row</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Read Final Answer</div>
+                    <p>The y-value when x = 1.5</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q1-approach3">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 3: Error Analysis</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Find Exact Solution</div>
+                    <p>This is a separable equation</p>
+                    <div class="formula-box">
+                        $$\frac{dy}{y} = 2x\,dx \implies \ln|y| = x^2 + C$$
+$$y(1) = 1 \implies C = -1$$
+$$y = e^{x^2-1}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Calculate Exact Value</div>
+                    <p>At x = 1.5</p>
+                    <div class="formula-box">
+                        $$y(1.5) = e^{1.5^2-1} = e^{1.25} \approx 3.4903$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Compare with Approximation</div>
+                    <p>Euler gives approximately y(1.5) ≈ 2.7095</p>
+                    <div class="formula-box">
+                        $$\text{Absolute Error} = |3.4903 - 2.7095| \approx 0.7808$$
+$$\text{Relative Error} \approx 22.4\%$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Observe Error Behavior</div>
+                    <p>Smaller h reduces error (try h = 0.05 for better accuracy)</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 2 -->
+        <div class="question-card" id="q2">
+            <span class="question-number">2</span>
+            <h2 class="question-title">Improved Euler Method</h2>
+            
+            <div class="question-text">
+                Apply the improved Euler method (Heun's method) to the same problem and compare accuracy
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q2', 1)">Predictor-Corrector Approach</button>
+<button class="tab-button" onclick="showApproach('q2', 2)">Geometric Interpretation</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q2-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Predictor-Corrector Approach</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Predictor Step</div>
+                    <p>Use standard Euler to predict</p>
+                    <div class="formula-box">
+                        $$y^*_{n+1} = y_n + h \cdot f(x_n, y_n)$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Corrector Step</div>
+                    <p>Average the slopes at both endpoints</p>
+                    <div class="formula-box">
+                        $$y_{n+1} = y_n + \frac{h}{2}[f(x_n, y_n) + f(x_{n+1}, y^*_{n+1})]$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Example: First Iteration</div>
+                    <p>From (1, 1) to (1.1, ?)</p>
+                    <div class="formula-box">
+                        $$y^*_1 = 1 + 0.1(2)(1)(1) = 1.2$$
+$$y_1 = 1 + \frac{0.1}{2}[2(1)(1) + 2(1.1)(1.2)]$$
+$$y_1 = 1 + 0.05[2 + 2.64] = 1.232$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Compare Accuracy</div>
+                    <p>Improved Euler is more accurate for same h</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q2-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Geometric Interpretation</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Standard Euler</div>
+                    <p>Uses slope at left endpoint only</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Improved Euler</div>
+                    <p>Averages slopes at left and right endpoints</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Visual Understanding</div>
+                    <p>This gives a better approximation of the curve</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Result</div>
+                    <p>Significantly reduces error with minimal extra computation</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Question 3 -->
+        <div class="question-card" id="q3">
+            <span class="question-number">3</span>
+            <h2 class="question-title">Convergence and Step Size</h2>
+            
+            <div class="question-text">
+                Investigate how changing step size h affects approximation accuracy
+            </div>
+            
+            <div class="approach-tabs">
+                <button class="tab-button active" onclick="showApproach('q3', 1)">Halving Step Size</button>
+<button class="tab-button" onclick="showApproach('q3', 2)">Error Estimation</button>
+
+            </div>
+            
+            <div class="approach-content active" id="q3-approach1">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 1: Halving Step Size</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Run with h = 0.1</div>
+                    <p>Get approximation A₁</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Run with h = 0.05</div>
+                    <p>Get approximation A₂</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Run with h = 0.025</div>
+                    <p>Get approximation A₃</p>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-title">Observe Pattern</div>
+                    <p>Error approximately quarters when h halves</p>
+                </div>
+
+            </div>
+
+            <div class="approach-content" id="q3-approach2">
+                <h3 style="color: var(--blue-ink); margin-bottom: 1rem;">Approach 2: Error Estimation</h3>
+                
+                <div class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-title">Local Truncation Error</div>
+                    <p>Error in single step</p>
+                    <div class="formula-box">
+                        $$\text{LTE} = O(h^2) \text{ for Euler}$$
+$$\text{LTE} = O(h^3) \text{ for Improved Euler}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-title">Global Error</div>
+                    <p>Accumulated error over interval</p>
+                    <div class="formula-box">
+                        $$\text{GE} = O(h) \text{ for Euler}$$
+$$\text{GE} = O(h^2) \text{ for Improved Euler}$$
+                    </div>
+                </div>
+
+                <div class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-title">Practical Implication</div>
+                    <p>Need very small h for high accuracy with standard Euler</p>
+                </div>
+
+            </div>
+
+        </div>
+
+        
+        <div class="intro" style="margin-top: 3rem; border-left-color: var(--blue-ink);">
+            <strong>Summary:</strong> Each problem can be approached from multiple angles. Understanding different methods helps develop deeper mathematical intuition and provides flexibility for solving similar problems in the future. <em>Practice switching between these perspectives to strengthen your problem-solving skills!</em>
+        </div>
+    </div>
+    
+    <script>
+        function showApproach(question, approachNum) {
+            // Hide all approaches for this question
+            const approaches = document.querySelectorAll(`#${question} .approach-content`);
+            approaches.forEach(a => a.classList.remove('active'));
+            
+            // Deactivate all tabs
+            const tabs = document.querySelectorAll(`#${question} .tab-button`);
+            tabs.forEach(t => t.classList.remove('active'));
+            
+            // Show selected approach
+            document.getElementById(`${question}-approach${approachNum}`).classList.add('active');
+            
+            // Activate selected tab
+            event.target.classList.add('active');
+            
+            // Re-render MathJax for the newly shown content
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+        
+        // Initial MathJax rendering
+        document.addEventListener('DOMContentLoaded', function() {
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        });
+    </script>
+</body>
+</html>
